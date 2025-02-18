@@ -8,4 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  base: '/quiz_answer_app/',  // Viktigt för GitHub Pages!
 })
