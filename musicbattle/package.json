@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://kodstudion.github.io/quiz_answer_app/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -14,6 +15,7 @@
     "@tailwindcss/vite": "^4.0.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.5",
     "tailwindcss": "^4.0.6"
   },
   "devDependencies": {
