@@ -7,7 +7,7 @@ const TeamPage: React.FC = () => {
   const { teamName } = useParams<{ teamName: string }>();
   const [gameId, setGameId] = useState("");
   const [isVerified, setIsVerified] = useState(false);
-  const [isButtonEnabled, setIsButtonEnabled] = useState(true);
+  const [isButtonEnabled] = useState(true);
   const [clicks, setClicks] = useState<string[]>([]);
 
   const verifyGameId = () => {
