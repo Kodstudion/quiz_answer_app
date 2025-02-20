@@ -6,33 +6,29 @@ interface ClickEntry {
   time: string;
 }
 
-const teamColors: Record<string, { color: string; pressedColor: string }> = {
-    red: { color: "from-red-500 to-red-700", pressedColor: "from-red-700 to-red-900" },
-    blue: { color: "from-blue-500 to-blue-700", pressedColor: "from-blue-700 to-blue-900" },
-    yellow: { color: "from-yellow-400 to-yellow-600", pressedColor: "from-yellow-600 to-yellow-800" },
-    orange: { color: "from-orange-500 to-orange-700", pressedColor: "from-orange-700 to-orange-900" },
-    purple: { color: "from-purple-500 to-purple-700", pressedColor: "from-purple-700 to-purple-900" },
-    green: { color: "from-green-500 to-green-700", pressedColor: "from-green-700 to-green-900" },
-    pink: { color: "from-pink-500 to-pink-700", pressedColor: "from-pink-700 to-pink-900" },
-    lightblue: { color: "from-cyan-500 to-cyan-700", pressedColor: "from-cyan-700 to-cyan-900" },
-  };
-  
+const teamColors = {
+  red: { color: "from-red-500 to-red-700", pressedColor: "from-red-700 to-red-900" },
+  blue: { color: "from-blue-500 to-blue-700", pressedColor: "from-blue-700 to-blue-900" },
+  yellow: { color: "from-yellow-400 to-yellow-600", pressedColor: "from-yellow-600 to-yellow-800" },
+  orange: { color: "from-orange-500 to-orange-700", pressedColor: "from-orange-700 to-orange-900" },
+  purple: { color: "from-purple-500 to-purple-700", pressedColor: "from-purple-700 to-purple-900" },
+  green: { color: "from-green-500 to-green-700", pressedColor: "from-green-700 to-green-900" },
+  pink: { color: "from-pink-500 to-pink-700", pressedColor: "from-pink-700 to-pink-900" },
+  lightblue: { color: "from-cyan-500 to-cyan-700", pressedColor: "from-cyan-700 to-cyan-900" },
+};
 
 const TeamPage: React.FC = () => {
   const navigate = useNavigate();
   const { teamName } = useParams<{ teamName: string }>();
-  const [gameId, setGameId] = useState<string>("");
-  const [isGameIdValid, setIsGameIdValid] = useState<boolean>(false);
+  const [gameId, setGameId] = useState<number | null>(null);
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [clicks, setClicks] = useState<ClickEntry[]>([]);
 
   const team = teamName?.toLowerCase() || "red";
-  const teamStyle = teamColors[team] || teamColors.red;
+  const teamStyle = teamColors[team as keyof typeof teamColors] || teamColors.red;
 
-  const handleGameIdSubmit = () => {
-    if (gameId.trim() !== "") {
-      setIsGameIdValid(true);
-    }
+  const handleSelectGameId = (id: number) => {
+    setGameId(id);
   };
 
   const handleButtonPress = () => {
@@ -58,27 +54,27 @@ const TeamPage: React.FC = () => {
         🎵 {teamName?.toUpperCase()} Lag 🎵
       </h1>
 
-      {!isGameIdValid ? (
+      {!gameId ? (
         <div className="flex flex-col items-center">
-          <p className="text-lg mb-4">Skriv in spel-ID för att ansluta:</p>
-          <input 
-            type="text" 
-            value={gameId} 
-            onChange={(e) => setGameId(e.target.value)}
-            className="border border-gray-400 rounded-lg px-4 py-2 text-center"
-          />
-          <button 
-            onClick={handleGameIdSubmit}
-            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition"
-          >
-            ✔ Anslut till spel
-          </button>
+          <p className="text-lg mb-4">Välj spel-ID:</p>
+          {/* 🆕 Knappar för att välja spel-ID */}
+          <div className="grid grid-cols-3 gap-4">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((id) => (
+              <button
+                key={id}
+                onClick={() => handleSelectGameId(id)}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-lg text-lg font-semibold shadow-md transition"
+              >
+                {id}
+              </button>
+            ))}
+          </div>
         </div>
       ) : (
         <div className="flex flex-col items-center">
-          <p className="text-lg mb-6">Vänta på att admin aktiverar knapparna...</p>
+          <p className="text-lg mb-6">Spel-ID valt: <strong>{gameId}</strong></p>
 
-          {/* 🆕 Större röd knapp (w-62 h-62) */}
+          {/* 🆕 Svarsknapp */}
           <button
             onClick={handleButtonPress}
             disabled={isPressed}
