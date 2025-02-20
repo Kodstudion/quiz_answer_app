@@ -6,7 +6,7 @@ interface ClickEntry {
   time: string;
 }
 
-const teamColors: { [key: string]: { color: string; pressedColor: string } } = {
+const teamColors = {
   red: { color: "from-red-500 to-red-700", pressedColor: "from-red-700 to-red-900" },
   blue: { color: "from-blue-500 to-blue-700", pressedColor: "from-blue-700 to-blue-900" },
   yellow: { color: "from-yellow-400 to-yellow-600", pressedColor: "from-yellow-600 to-yellow-800" },
@@ -77,17 +77,16 @@ const TeamPage: React.FC = () => {
         <div className="flex flex-col items-center">
           <p className="text-lg mb-6">Vänta på att admin aktiverar knapparna...</p>
 
-            {/* 🆕 Större röd knapp (w-62 h-62) */}
-            <button
-                onClick={handleButtonPress}
-                disabled={isPressed}
-                className={`w-62 h-62 rounded-full shadow-lg border-4 border-gray-300 
-                transition-all duration-300 transform hover:scale-110 
-                bg-gradient-to-b ${isPressed ? teamStyle.pressedColor : teamStyle.color} ${
-                    isPressed ? "cursor-not-allowed opacity-50" : ""
-                }`}
-            />
-
+          {/* 🆕 Större röd knapp (w-62 h-62) */}
+          <button
+            onClick={handleButtonPress}
+            disabled={isPressed}
+            className={`w-62 h-62 rounded-full shadow-lg border-4 border-gray-300 
+            transition-all duration-300 transform hover:scale-110 
+            bg-gradient-to-b ${isPressed ? teamStyle.pressedColor : teamStyle.color} ${
+              isPressed ? "cursor-not-allowed opacity-50" : ""
+            }`}
+          />
 
           {isPressed && (
             <p className="mt-4 text-lg font-semibold text-gray-700">✔ Tryck registrerat!</p>

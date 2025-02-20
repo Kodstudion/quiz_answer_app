@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import VersionInfo from "./VersionInfo";
 
+type ButtonMode = "inactive" | "single-press" | "multi-press";
+
 interface ClickEntry {
   team: string;
   time: string;
@@ -21,7 +23,7 @@ const teams = [
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
   const [gameId, setGameId] = useState<number | null>(null);
-  const [buttonsEnabled, setButtonsEnabled] = useState<boolean>(true);
+  const [buttonMode, setButtonMode] = useState<ButtonMode>("inactive");
   const [clicks, setClicks] = useState<ClickEntry[]>([]);
   const [pressedTeams, setPressedTeams] = useState<{ [key: string]: boolean }>({});
 
@@ -36,6 +38,7 @@ const AdminPage: React.FC = () => {
 
     const newId = Math.floor(Math.random() * 9) + 1;
     setGameId(newId);
+    setButtonMode("inactive");
     setClicks([]);
     setPressedTeams({});
   };
@@ -49,19 +52,16 @@ const AdminPage: React.FC = () => {
     );
     if (confirmEndGame) {
       setGameId(null);
+      setButtonMode("inactive");
       setClicks([]);
       setPressedTeams({});
     }
   };
 
-  // Funktion för att aktivera/inaktivera lagens knappar
-  const toggleButtons = () => {
-    setButtonsEnabled((prev) => !prev);
-  };
-
   // Funktion för att registrera ett knapptryck
   const addClick = (team: string) => {
-    if (pressedTeams[team]) return; // Om laget redan tryckt, gör inget
+    if (buttonMode === "inactive") return;
+    if (buttonMode === "single-press" && pressedTeams[team]) return;
 
     const timestamp = new Date().toLocaleTimeString();
     setClicks((prev) => [...prev, { team, time: timestamp }]);
@@ -82,10 +82,6 @@ const AdminPage: React.FC = () => {
       <h1 className="text-4xl font-extrabold mb-10 text-center tracking-wide">
         🔧 Admin Panel
       </h1>
-
-      <p className="text-lg text-center mb-6">
-        Här kan du hantera spelets omgångar och laginställningar.
-      </p>
 
       {/* Visa aktivt spel-ID */}
       {gameId && (
@@ -113,16 +109,21 @@ const AdminPage: React.FC = () => {
         )}
       </div>
 
-      {/* Knapp för att aktivera/inaktivera lagens knappar */}
-      <div className="mt-6">
-        <button 
-          onClick={toggleButtons}
-          className={`px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition ${
-            buttonsEnabled ? "bg-green-600 hover:bg-green-700 text-white" : "bg-gray-500 hover:bg-gray-600 text-white"
-          }`}
-        >
-          {buttonsEnabled ? "✅ Svarsknappar AKTIVA" : "❌ Svarsknappar INAKTIVA"}
-        </button>
+      {/* 🆕 Radioknappar för att styra knappens läge */}
+      <div className="mt-6 flex flex-col">
+        <span className="text-lg font-semibold mb-2">Styr lagens knappar:</span>
+        {["inactive", "single-press", "multi-press"].map((mode) => (
+          <label key={mode} className="inline-flex items-center space-x-2 mb-2">
+            <input
+              type="radio"
+              value={mode}
+              checked={buttonMode === mode}
+              onChange={() => setButtonMode(mode as ButtonMode)}
+              className="form-radio text-blue-600"
+            />
+            <span>{mode === "inactive" ? "🚫 Inaktivera knappar" : mode === "single-press" ? "✅ Engångstryck" : "🔄 Flera tryck"}</span>
+          </label>
+        ))}
       </div>
 
       {/* 🆕 Snygga runda lagknappar */}
@@ -138,7 +139,7 @@ const AdminPage: React.FC = () => {
         ))}
       </div>
 
-      {/* 🆕 Återställer tabellen under knapparna */}
+      {/* 🆕 Tabell med tryckhistorik */}
       <div className="mt-10 w-full max-w-md">
         <h2 className="text-xl font-semibold mb-2 text-center">📋 Tryckhistorik</h2>
         <table className="w-full bg-white rounded-lg shadow-md">
