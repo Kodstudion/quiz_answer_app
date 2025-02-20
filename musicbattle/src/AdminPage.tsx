@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import VersionInfo from "./VersionInfo";
 
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const AdminPage: React.FC = () => {
       <p className="text-lg text-center">
         Här kan du hantera spelets omgångar och laginställningar.
       </p>
-
+      <VersionInfo /> {/* ✅ Flyttad utanför div-containern */}
     </div>
   );
 };

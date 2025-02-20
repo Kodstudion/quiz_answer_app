@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Settings } from "lucide-react"; // Importerar ikonbiblioteket för kugghjul
+import { Settings } from "lucide-react";
+import VersionInfo from "./VersionInfo";
 
 const teams = [
   { name: "Red", color: "bg-red-600 hover:bg-red-700 text-white" },
@@ -45,6 +46,7 @@ const Home: React.FC = () => {
           </button>
         ))}
       </div>
+      <VersionInfo /> {/* ✅ Flyttad utanför div-containern */}
     </div>
   );
 };

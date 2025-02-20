@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import VersionInfo from "./VersionInfo";
 
 const validGameIds = ["1234", "5678", "91011"];
 
@@ -114,6 +115,7 @@ const TeamPage: React.FC = () => {
           </div>
         )}
       </div>
+      <VersionInfo /> {/* ✅ Flyttad utanför div-containern */}
     </div>
   );
 };
