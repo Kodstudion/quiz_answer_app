@@ -26,17 +26,16 @@ a:hover {
 
 body {
   margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
+/* 🔥 FIX: Ta bort den tvingande bakgrundsfärgen på knappar */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -44,13 +43,19 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
+/* 🔥 FIX: Se till att Tailwind-färger fungerar korrekt */
+button:not(.bg-red-600, .bg-blue-600, .bg-yellow-500, .bg-orange-500, .bg-purple-600, .bg-green-600, .bg-pink-500, .bg-cyan-500) {
+  background-color: #1a1a1a;
+}
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -64,7 +69,15 @@ button:focus-visible {
   a:hover {
     color: #747bff;
   }
-  button {
+  button:not(.bg-red-600, .bg-blue-600, .bg-yellow-500, .bg-orange-500, .bg-purple-600, .bg-green-600, .bg-pink-500, .bg-cyan-500) {
     background-color: #f9f9f9;
   }
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
