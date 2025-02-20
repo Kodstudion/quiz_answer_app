@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import VersionInfo from "./VersionInfo";
 
+interface ClickEntry {
+  time: string;
+}
+
 const teamColors: { [key: string]: { color: string; pressedColor: string } } = {
   red: { color: "from-red-500 to-red-700", pressedColor: "from-red-700 to-red-900" },
   blue: { color: "from-blue-500 to-blue-700", pressedColor: "from-blue-700 to-blue-900" },
@@ -19,6 +23,7 @@ const TeamPage: React.FC = () => {
   const [gameId, setGameId] = useState<string>("");
   const [isGameIdValid, setIsGameIdValid] = useState<boolean>(false);
   const [isPressed, setIsPressed] = useState<boolean>(false);
+  const [clicks, setClicks] = useState<ClickEntry[]>([]);
 
   const team = teamName?.toLowerCase() || "red";
   const teamStyle = teamColors[team] || teamColors.red;
@@ -32,7 +37,8 @@ const TeamPage: React.FC = () => {
   const handleButtonPress = () => {
     if (!isPressed) {
       setIsPressed(true);
-      console.log(`Lag ${teamName} tryckte på knappen!`);
+      const timestamp = new Date().toLocaleTimeString();
+      setClicks((prev) => [...prev, { time: timestamp }]);
     }
   };
 
@@ -71,20 +77,48 @@ const TeamPage: React.FC = () => {
         <div className="flex flex-col items-center">
           <p className="text-lg mb-6">Vänta på att admin aktiverar knapparna...</p>
 
-          {/* 🆕 Snygg röd knapp för att svara */}
-          <button
-            onClick={handleButtonPress}
-            disabled={isPressed}
-            className={`w-32 h-32 rounded-full shadow-lg border-4 border-gray-300 
-            transition-all duration-300 transform hover:scale-110 
-            bg-gradient-to-b ${isPressed ? teamStyle.pressedColor : teamStyle.color} ${
-                isPressed ? "cursor-not-allowed opacity-50" : ""
-            }`}
+            {/* 🆕 Större röd knapp (w-62 h-62) */}
+            <button
+                onClick={handleButtonPress}
+                disabled={isPressed}
+                className={`w-62 h-62 rounded-full shadow-lg border-4 border-gray-300 
+                transition-all duration-300 transform hover:scale-110 
+                bg-gradient-to-b ${isPressed ? teamStyle.pressedColor : teamStyle.color} ${
+                    isPressed ? "cursor-not-allowed opacity-50" : ""
+                }`}
             />
+
 
           {isPressed && (
             <p className="mt-4 text-lg font-semibold text-gray-700">✔ Tryck registrerat!</p>
           )}
+
+          {/* 🆕 Tabell med tryckhistorik */}
+          <div className="mt-10 w-full max-w-md">
+            <h2 className="text-xl font-semibold mb-2 text-center">📋 Tryckhistorik</h2>
+            <table className="w-full bg-white rounded-lg shadow-md">
+              <thead className="bg-gray-300">
+                <tr>
+                  <th className="py-2 px-4 text-left">Tidpunkt</th>
+                </tr>
+              </thead>
+              <tbody>
+                {clicks.length > 0 ? (
+                  clicks.map((click, index) => (
+                    <tr key={index} className="border-t border-gray-300">
+                      <td className="py-2 px-4">{click.time}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td className="py-2 px-4 text-center text-gray-500">
+                      Inga tryck registrerade än
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
