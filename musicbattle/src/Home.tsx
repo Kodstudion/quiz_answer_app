@@ -21,22 +21,23 @@ const Home: React.FC = () => {
         🎵 Välkommen till <span className="text-blue-600">Musikkampen</span> 🎵
       </h1>
 
-      {/* Lagrutor */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-xl">
+      {/* Grid med 2 kolumner och 4 rader */}
+      <div className="grid grid-cols-2 gap-4 w-full max-w-md">
         {teams.map(({ name, color }) => (
           <button
             key={name}
             onClick={() => navigate(`/team/${name.toLowerCase()}`)}
-            className={`${color} px-8 py-4 rounded-2xl text-xl font-semibold w-full shadow-md transform transition duration-300 hover:scale-105`}
+            className={`${color} px-6 py-3 rounded-2xl text-lg font-semibold w-full shadow-md transform transition duration-300 hover:scale-105`}
           >
             {name}
           </button>
         ))}
       </div>
 
+      {/* Admin-knapp längst ner */}
       <button
         onClick={() => navigate("/admin")}
-        className="mt-10 bg-gray-800 hover:bg-gray-900 text-white px-8 py-4 rounded-2xl text-xl font-semibold w-full max-w-xl shadow-md transform transition duration-300 hover:scale-105"
+        className="mt-8 bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-2xl text-lg font-semibold w-full max-w-md shadow-md transform transition duration-300 hover:scale-105"
       >
         🔧 Admin
       </button>
