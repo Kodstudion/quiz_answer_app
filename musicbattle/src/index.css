@@ -69,9 +69,6 @@ button:focus-visible {
   a:hover {
     color: #747bff;
   }
-  button:not(.bg-red-600, .bg-blue-600, .bg-yellow-500, .bg-orange-500, .bg-purple-600, .bg-green-600, .bg-pink-500, .bg-cyan-500) {
-    background-color: #f9f9f9;
-  }
 }
 
 html, body {
