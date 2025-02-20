@@ -47,11 +47,6 @@ button {
   transition: border-color 0.25s;
 }
 
-/* 🔥 FIX: Se till att Tailwind-färger fungerar korrekt */
-button:not(.bg-red-600, .bg-blue-600, .bg-yellow-500, .bg-orange-500, .bg-purple-600, .bg-green-600, .bg-pink-500, .bg-cyan-500) {
-  background-color: #1a1a1a;
-}
-
 button:hover {
   border-color: #646cff;
 }
