@@ -3,8 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ref, onValue, push } from "firebase/database";
 import { database } from "./firebaseConfig";
 import VersionInfo from "./VersionInfo";
+import { throttle } from "lodash";
 
-const teamColors: { [key: string]: { color: string; pressedColor: string } } = {
+interface TeamColors {
+  [key: string]: { color: string; pressedColor: string };
+}
+
+const teamColors: TeamColors = {
   red: { color: "from-red-500 to-red-700", pressedColor: "from-red-700 to-red-900" },
   blue: { color: "from-blue-500 to-blue-700", pressedColor: "from-blue-700 to-blue-900" },
   yellow: { color: "from-yellow-400 to-yellow-600", pressedColor: "from-yellow-600 to-yellow-800" },
@@ -15,59 +20,78 @@ const teamColors: { [key: string]: { color: string; pressedColor: string } } = {
   lightblue: { color: "from-cyan-500 to-cyan-700", pressedColor: "from-cyan-700 to-cyan-900" },
 };
 
+const validateTeamName = (name: string | undefined): keyof TeamColors => {
+  return teamColors[name?.toLowerCase() || ""] ? (name!.toLowerCase() as keyof TeamColors) : "red";
+};
+
 const TeamPage: React.FC = () => {
   const navigate = useNavigate();
   const { teamName } = useParams<{ teamName: string }>();
   const [gameId, setGameId] = useState<number | null>(null);
-  const [buttonMode, setButtonMode] = useState<string>("inactive");
+  const buttonMode = React.useRef<string>("inactive"); // Byter från useState till let
   const [isPressed, setIsPressed] = useState(false);
   const [clicks, setClicks] = useState<{ team: string; timestamp: string }[]>([]);
 
-  const teamStyle = teamColors[teamName?.toLowerCase() || "red"] || teamColors.red;
+  const validTeamName = validateTeamName(teamName?.toString());
+  const teamStyle = teamColors[validTeamName];
+
+  const listenToButtonMode = (id: number) => {
+  const modeRef = ref(database, `games/${id}/buttonMode`);
+  onValue(modeRef, (snapshot) => {
+    const mode = snapshot.val();
+    console.log("Button mode updated from admin:", mode);
+    buttonMode.current = mode || "inactive";
+  });
+};
+
+const isButtonDisabled = () => {
+  return buttonMode.current === "inactive" || (buttonMode.current === "single-press" && isPressed);
+};
+
+  
 
   const handleGameIdSelect = (id: number) => {
     setGameId(id);
-    listenToButtonMode(id);
-    listenToClicks(id);
-  };
-
-  const listenToButtonMode = (id: number) => {
-    const modeRef = ref(database, `games/${id}/buttonMode`);
-    onValue(modeRef, (snapshot) => {
-      const mode = snapshot.val();
-      setButtonMode(mode || "inactive");
-    });
+listenToClicks(id);
+listenToButtonMode(id);
   };
 
   const listenToClicks = (id: number) => {
+    console.log(`Listening to clicks for game ID: ${id}`);
     const clicksRef = ref(database, `games/${id}/clicks`);
-    onValue(clicksRef, (snapshot) => {
+    onValue(clicksRef, throttle((snapshot) => {
       const data = snapshot.val();
       const clicksData = data
-        ? Object.values(data) as { team: string; timestamp: string }[]
+        ? (Object.values(data) as { team: string; timestamp: string }[])
         : [];
+      console.log('Fetched clicks data:', clicksData);
+      console.log("listenToClicks");
       setClicks(clicksData);
-    });
+
+      if (buttonMode.current === "single-press") {
+        const hasTeamClicked = clicksData.some((click) => click.team === teamName);
+        setIsPressed(hasTeamClicked);
+      }
+    }, 300));
   };
 
   const handleButtonPress = () => {
-    if (buttonMode === "inactive") return;
-    if (buttonMode === "single-press" && isPressed) return;
+    if (buttonMode.current === "inactive") return;
+    if (buttonMode.current === "single-press" && isPressed) return;
 
     const clickRef = ref(database, `games/${gameId}/clicks`);
     push(clickRef, {
       team: teamName,
       timestamp: new Date().toISOString(),
     });
-
-    if (buttonMode === "single-press") {
-      setIsPressed(true);
+    console.log("handleButtonPress");
+    if (buttonMode.current === "single-press") {
+    setIsPressed(true);
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
-      {/* Tillbaka-knapp */}
       <button
         onClick={() => navigate("/")}
         className="absolute top-4 left-4 bg-gray-200 hover:bg-gray-300 text-black px-4 py-2 rounded-lg text-sm shadow-md"
@@ -75,7 +99,6 @@ const TeamPage: React.FC = () => {
         ⬅ Till start
       </button>
 
-      {/* Välj spel-ID */}
       {!gameId ? (
         <div className="flex flex-col items-center gap-4">
           <h1 className="text-2xl font-bold">Välj spel-ID</h1>
@@ -96,11 +119,10 @@ const TeamPage: React.FC = () => {
           <h1 className="text-3xl font-bold mb-6">Lag: {teamName}</h1>
           <button
             onClick={handleButtonPress}
-            disabled={buttonMode === "inactive" || (buttonMode === "single-press" && isPressed)}
-            className={`w-62 h-62 rounded-full shadow-lg border-4 border-gray-300 transition-all duration-300 transform hover:scale-110 bg-gradient-to-b ${isPressed ? teamStyle.pressedColor : teamStyle.color} ${buttonMode === "inactive" ? "opacity-50 cursor-not-allowed" : ""}`}
+            disabled={isButtonDisabled()}
+            className={`w-62 h-62 rounded-full shadow-lg border-4 border-gray-300 transition-all duration-300 transform hover:scale-110 bg-gradient-to-b ${isPressed ? teamStyle.pressedColor : teamStyle.color} ${buttonMode.current === "inactive" ? "opacity-50 cursor-not-allowed" : ""}`}
           ></button>
 
-          {/* Tryckhistorik */}
           <div className="mt-10 w-full max-w-md">
             <h2 className="text-xl font-semibold mb-2 text-center">📋 Tryckhistorik</h2>
             <table className="w-full bg-white rounded-lg shadow-md">

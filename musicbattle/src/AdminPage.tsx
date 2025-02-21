@@ -81,9 +81,12 @@ const AdminPage: React.FC = () => {
     if (gameId !== null) {
       set(ref(database, `games/${gameId}/clicks`), {});
       setClicks([]);
+      // Återaktivera alla knappar för engångstryck
+      if (buttonMode === "single-press") {
+        setPressedTeams({});
+      }
     }
   };
-
   const updateButtonMode = (mode: ButtonMode) => {
     if (gameId !== null) {
       set(ref(database, `games/${gameId}/buttonMode`), mode);
