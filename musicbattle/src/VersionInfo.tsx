@@ -1,6 +1,6 @@
 import React from "react";
 
-const version = import.meta.env.VITE_APP_VERSION || "dev";
+const version = import.meta.env.VITE_APP_VERSION;
 
 const VersionInfo: React.FC = () => {
   return (
