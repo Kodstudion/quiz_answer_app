@@ -6,11 +6,12 @@
   "homepage": "https://kodstudion.github.io/quiz_answer_app/",
   "scripts": {
     "dev": "vite",
-    "build": "echo \"VITE_APP_VERSION=$(git rev-parse --short HEAD)\" > .env && tsc -b && vite build",
+    "build": "powershell -Command \"echo VITE_APP_VERSION=$(git rev-parse --short HEAD) > .env.production\" && powershell -Command \"echo VITE_APP_VERSION=$(git rev-parse --short HEAD) > .env.local\" && npm run vite-build",
+    "vite-build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist",
-    "set-version": "echo \"VITE_APP_VERSION=$(git rev-parse --short HEAD)\" > .env"
+    "set-version": "powershell -Command \"echo VITE_APP_VERSION=$(git rev-parse --short HEAD) > .env.production\" && powershell -Command \"echo VITE_APP_VERSION=$(git rev-parse --short HEAD) > .env.local\""
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.6",
