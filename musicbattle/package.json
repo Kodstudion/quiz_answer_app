@@ -6,7 +6,7 @@
   "homepage": "https://kodstudion.github.io/quiz_answer_app/",
   "scripts": {
     "dev": "vite",
-    "build": "powershell -Command \"$hash = (git rev-parse --short HEAD); \\\"VITE_APP_VERSION=$hash\\\" | Out-File -Encoding ASCII -FilePath .env; npm run vite-build\"",
+    "build": "powershell -Command \"$hash = (git rev-parse --short HEAD); \\\"VITE_APP_VERSION=$hash\\\" | Out-File -Encoding ASCII -FilePath .env; $hash | Out-File -Encoding ASCII -FilePath .env.production; npm run vite-build\"",
     "vite-build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
