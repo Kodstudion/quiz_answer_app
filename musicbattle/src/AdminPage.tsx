@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { ref, set, push, remove, onValue, get } from "firebase/database";
 import { database } from "./firebaseConfig";
 import VersionInfo from "./VersionInfo";
 import { teams } from "./constants/teamConfig";
 import TeamButton from "./components/TeamButton";
-
+import BackToHomeButton from "./components/BackHomeButton";
 type ButtonMode = "inactive" | "single-press" | "multi-press";
 
 interface ClickEntry {
@@ -14,7 +13,6 @@ interface ClickEntry {
 }
 
 const AdminPage: React.FC = () => {
-  const navigate = useNavigate();
   const [gameId, setGameId] = useState<number | null>(null);
   const [buttonMode, setButtonMode] = useState<ButtonMode>("inactive");
   const [clicks, setClicks] = useState<ClickEntry[]>([]);
@@ -118,13 +116,7 @@ const AdminPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
-      <button
-        onClick={() => navigate("/")}
-        className="absolute top-4 left-4 bg-gray-200 hover:bg-gray-300 text-black px-4 py-2 rounded-lg text-sm shadow-md"
-      >
-        ⬅ Till start
-      </button>
-
+      <BackToHomeButton />
       {gameId && (
         <div className="mb-4 text-xl font-semibold bg-white p-4 rounded-lg shadow-md">
           🏆 Aktivt spel-ID: <span className="text-blue-600">{gameId}</span>

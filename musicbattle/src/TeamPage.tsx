@@ -1,11 +1,12 @@
 import React, { useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ref, onValue, push } from "firebase/database";
 import { database } from "./firebaseConfig";
 import VersionInfo from "./VersionInfo";
 import { teams } from "./constants/teamConfig";
 import { throttle } from "lodash";
 import TeamButton from "./components/TeamButton";
+import BackToHomeButton from "./components/BackHomeButton";
 
 interface ClickEntry {
   team: string;
@@ -13,7 +14,6 @@ interface ClickEntry {
 }
 
 const TeamPage: React.FC = () => {
-  const navigate = useNavigate();
   const { teamName } = useParams<{ teamName: string }>();
   const [gameId, setGameId] = useState<number | null>(null);
   const buttonMode = useRef<string>("inactive");
@@ -73,13 +73,7 @@ const TeamPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
-      <button
-        onClick={() => navigate("/")}
-        className="absolute top-4 left-4 bg-gray-200 hover:bg-gray-300 text-black px-4 py-2 rounded-lg text-sm shadow-md"
-      >
-        ⬅ Till start
-      </button>
-
+      <BackToHomeButton />
       {!gameId ? (
         <div className="flex flex-col items-center gap-4">
           <h1 className="text-2xl font-bold">Välj spel-ID</h1>
