@@ -4,6 +4,7 @@ import { ref, set, push, remove, onValue, get } from "firebase/database";
 import { database } from "./firebaseConfig";
 import VersionInfo from "./VersionInfo";
 import { teams } from "./constants/teamConfig";
+import TeamButton from "./components/TeamButton";
 
 type ButtonMode = "inactive" | "single-press" | "multi-press";
 
@@ -23,7 +24,7 @@ const AdminPage: React.FC = () => {
 
   useEffect(() => {
     checkForActiveGame();
-  }, []);
+  });
 
   const checkForActiveGame = async () => {
     const gamesRef = ref(database, "games");
@@ -91,7 +92,7 @@ const AdminPage: React.FC = () => {
     }
   };
 
-  const handleTeamPress = (team: string) => {
+  const handleButtonPress = (team: string) => {
     if (buttonMode === "inactive") return;
     if (buttonMode === "single-press" && pressedTeams[team]) return;
 
@@ -154,14 +155,16 @@ const AdminPage: React.FC = () => {
       <div className="grid grid-cols-4 gap-4">
         {teams.map(
           ({ name, displayName, teamButtonColor, teamButtonPressedColor }) => (
-            <button
+            <TeamButton
               key={name}
-              onClick={() => handleTeamPress(displayName)}
-              className={`w-20 h-20 rounded-full shadow-lg border-4 border-gray-300 transition-all duration-300 transform hover:scale-110 bg-gradient-to-b ${
-                buttonMode === "single-press" && pressedTeams[name]
-                  ? teamButtonPressedColor
-                  : teamButtonColor
-              }`}
+              isPressed={pressedTeams[name]}
+              buttonMode={buttonMode}
+              teamButtonColor={teamButtonColor}
+              teamButtonPressedColor={teamButtonPressedColor}
+              onClick={handleButtonPress}
+              teamName={displayName}
+              width="w-20"
+              height="h-20"
             />
           )
         )}

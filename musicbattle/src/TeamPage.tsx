@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ref, onValue, push } from "firebase/database";
 import { database } from "./firebaseConfig";
@@ -56,13 +56,13 @@ const TeamPage: React.FC = () => {
     listenToButtonMode(id);
   };
 
-  const handleButtonPress = () => {
+  const handleButtonPress = (team: string) => {
     if (buttonMode.current === "inactive") return;
     if (buttonMode.current === "single-press" && isPressed) return;
 
     const clickRef = ref(database, `games/${gameId}/clicks`);
     push(clickRef, {
-      team: currentTeam.displayName,
+      team,
       timestamp: new Date().toISOString(),
     });
 
@@ -106,6 +106,7 @@ const TeamPage: React.FC = () => {
             teamButtonColor={currentTeam.teamButtonColor}
             teamButtonPressedColor={currentTeam.teamButtonPressedColor}
             onClick={handleButtonPress}
+            teamName={currentTeam.displayName}
           />
           <div className="mt-10 w-full max-w-md">
             <h2 className="text-xl font-semibold mb-2 text-center">
