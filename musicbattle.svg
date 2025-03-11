@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Lager_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="800px" height="800px" viewBox="0 0 800 800" enable-background="new 0 0 800 800" xml:space="preserve">
+<symbol  id="Musik" viewBox="-30.953 -30.311 61.905 60.622">
+	<path d="M30.875-15.991h0.057v46.146l0.021,0.155l-0.021-0.003v0.003l-0.048-0.009l-44.898-6.012l-0.003,0v-36.461
+		c-1.777,0.568-3.777,0.798-5.862,0.595c-6.597-0.641-11.538-5.337-11.038-10.489c0.501-5.153,6.253-8.813,12.849-8.172
+		c6.598,0.641,11.539,5.337,11.038,10.49c-0.009,0.087-0.03,0.171-0.042,0.258h0.057v31.628l30.947,4.52V-8.671
+		c-1.777,0.568-3.776,0.798-5.862,0.595C11.472-8.718,6.53-13.414,7.03-18.566c0.501-5.153,6.253-8.813,12.849-8.172
+		c6.598,0.641,11.539,5.337,11.038,10.49C30.908-16.161,30.887-16.078,30.875-15.991z"/>
+</symbol>
+<ellipse id="Orange_1_" fill="#FFFFFF" cx="400.447" cy="399.685" rx="399.605" ry="399.368"/>
+<linearGradient id="Blue_1_" gradientUnits="userSpaceOnUse" x1="0.8418" y1="399.6846" x2="800.0527" y2="399.6846">
+	<stop  offset="0.6056" style="stop-color:#0000FF;stop-opacity:0"/>
+	<stop  offset="0.993" style="stop-color:#0000FF"/>
+</linearGradient>
+<ellipse id="Blue" fill="url(#Blue_1_)" cx="400.447" cy="399.685" rx="399.605" ry="399.368"/>
+<linearGradient id="LightBlue_1_" gradientUnits="userSpaceOnUse" x1="143.6694" y1="705.7002" x2="657.2253" y2="93.6682">
+	<stop  offset="0.5329" style="stop-color:#00FFFF;stop-opacity:0"/>
+	<stop  offset="0.993" style="stop-color:#00FFFF"/>
+</linearGradient>
+<ellipse id="LightBlue" fill="url(#LightBlue_1_)" cx="400.447" cy="399.685" rx="399.605" ry="399.368"/>
+<linearGradient id="Red_1_" gradientUnits="userSpaceOnUse" x1="143.6694" y1="705.7002" x2="657.2253" y2="93.6682">
+	<stop  offset="0" style="stop-color:#FF0000"/>
+	<stop  offset="0.2911" style="stop-color:#FF0000;stop-opacity:0"/>
+</linearGradient>
+<ellipse id="Red" fill="url(#Red_1_)" cx="400.447" cy="399.685" rx="399.605" ry="399.368"/>
+<linearGradient id="Green_1_" gradientUnits="userSpaceOnUse" x1="143.6694" y1="93.6685" x2="657.2253" y2="705.7006">
+	<stop  offset="0" style="stop-color:#00FF00"/>
+	<stop  offset="0.2911" style="stop-color:#00FF00;stop-opacity:0"/>
+</linearGradient>
+<ellipse id="Green" fill="url(#Green_1_)" cx="400.447" cy="399.685" rx="399.605" ry="399.368"/>
+<linearGradient id="Purple_1_" gradientUnits="userSpaceOnUse" x1="143.6694" y1="93.6685" x2="657.2253" y2="705.7006">
+	<stop  offset="0.5" style="stop-color:#FF00FF;stop-opacity:0"/>
+	<stop  offset="1" style="stop-color:#FF00FF"/>
+</linearGradient>
+<ellipse id="Purple" fill="url(#Purple_1_)" cx="400.447" cy="399.685" rx="399.605" ry="399.368"/>
+<linearGradient id="Orange_2_" gradientUnits="userSpaceOnUse" x1="0.8418" y1="399.6846" x2="800.0527" y2="399.6846">
+	<stop  offset="0" style="stop-color:#FBB03B"/>
+	<stop  offset="0.5" style="stop-color:#F7931E;stop-opacity:0"/>
+</linearGradient>
+<ellipse id="Orange" fill="url(#Orange_2_)" cx="400.447" cy="399.685" rx="399.605" ry="399.368"/>
+<ellipse fill="#FFFFFF" cx="400" cy="50" rx="37.182" ry="19.408"/>
+<use xlink:href="#Musik"  width="61.905" height="60.622" x="-30.953" y="-30.311" transform="matrix(8.0769 0 0 -8.2479 400 400)" overflow="visible"/>
+<ellipse transform="matrix(0.8991 -0.4378 0.4378 0.8991 -12.0641 128.949)" fill="#FFFFFF" cx="273.624" cy="90.638" rx="60.782" ry="25.487"/>
+<ellipse transform="matrix(0.7334 -0.6798 0.6798 0.7334 -60.4967 158.8203)" fill="#FFFFFF" cx="172.251" cy="156.545" rx="36.808" ry="19.408"/>
+<ellipse transform="matrix(0.5494 -0.8356 0.8356 0.5494 -130.6953 196.4394)" fill="#FFFFFF" cx="116.777" cy="219.391" rx="25.024" ry="19.407"/>
+</svg>
