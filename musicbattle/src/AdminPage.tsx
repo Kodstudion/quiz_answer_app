@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ref, set, push, remove, onValue, get } from "firebase/database";
 import { database } from "./firebaseConfig";
 import VersionInfo from "./VersionInfo";
+import { teams } from "./constants/teamConfig";
 
 type ButtonMode = "inactive" | "single-press" | "multi-press";
 
@@ -11,23 +12,14 @@ interface ClickEntry {
   timestamp: string;
 }
 
-const teams = [
-  { name: "Red", color: "from-red-500 to-red-700", pressedColor: "from-red-700 to-red-900" },
-  { name: "Blue", color: "from-blue-500 to-blue-700", pressedColor: "from-blue-700 to-blue-900" },
-  { name: "Yellow", color: "from-yellow-400 to-yellow-600", pressedColor: "from-yellow-600 to-yellow-800" },
-  { name: "Orange", color: "from-orange-500 to-orange-700", pressedColor: "from-orange-700 to-orange-900" },
-  { name: "Purple", color: "from-purple-500 to-purple-700", pressedColor: "from-purple-700 to-purple-900" },
-  { name: "Green", color: "from-green-500 to-green-700", pressedColor: "from-green-700 to-green-900" },
-  { name: "Pink", color: "from-pink-500 to-pink-700", pressedColor: "from-pink-700 to-pink-900" },
-  { name: "LightBlue", color: "from-cyan-500 to-cyan-700", pressedColor: "from-cyan-700 to-cyan-900" }
-];
-
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
   const [gameId, setGameId] = useState<number | null>(null);
   const [buttonMode, setButtonMode] = useState<ButtonMode>("inactive");
   const [clicks, setClicks] = useState<ClickEntry[]>([]);
-  const [pressedTeams, setPressedTeams] = useState<{ [key: string]: boolean }>({});
+  const [pressedTeams, setPressedTeams] = useState<{ [key: string]: boolean }>(
+    {}
+  );
 
   useEffect(() => {
     checkForActiveGame();
@@ -47,7 +39,9 @@ const AdminPage: React.FC = () => {
 
   const createNewGame = () => {
     if (gameId !== null) {
-      alert(`Det finns redan en aktiv spelomgång med ID ${gameId}. Avsluta den innan du skapar en ny.`);
+      alert(
+        `Det finns redan en aktiv spelomgång med ID ${gameId}. Avsluta den innan du skapar en ny.`
+      );
       return;
     }
 
@@ -62,7 +56,9 @@ const AdminPage: React.FC = () => {
 
   const endGame = () => {
     if (gameId !== null) {
-      const confirmEnd = window.confirm(`Är du säker på att du vill avsluta spelomgång ${gameId}?`);
+      const confirmEnd = window.confirm(
+        `Är du säker på att du vill avsluta spelomgång ${gameId}?`
+      );
       if (confirmEnd) {
         clearGameData(gameId);
         setGameId(null);
@@ -121,7 +117,10 @@ const AdminPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
-      <button onClick={() => navigate("/")} className="absolute top-4 left-4 bg-gray-200 hover:bg-gray-300 text-black px-4 py-2 rounded-lg text-sm shadow-md">
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-4 left-4 bg-gray-200 hover:bg-gray-300 text-black px-4 py-2 rounded-lg text-sm shadow-md"
+      >
         ⬅ Till start
       </button>
 
@@ -133,13 +132,19 @@ const AdminPage: React.FC = () => {
 
       <div className="flex gap-4 mb-6">
         {!gameId && (
-          <button onClick={createNewGame} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition">
+          <button
+            onClick={createNewGame}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition"
+          >
             🎲 Skapa ny spelomgång
           </button>
         )}
 
         {gameId && (
-          <button onClick={endGame} className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition">
+          <button
+            onClick={endGame}
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition"
+          >
             🛑 Avsluta spel
           </button>
         )}
@@ -147,13 +152,19 @@ const AdminPage: React.FC = () => {
 
       {/* Lagknappar */}
       <div className="grid grid-cols-4 gap-4">
-        {teams.map(({ name, color, pressedColor }) => (
-          <button
-            key={name}
-            onClick={() => handleTeamPress(name)}
-            className={`w-20 h-20 rounded-full shadow-lg border-4 border-gray-300 transition-all duration-300 transform hover:scale-110 bg-gradient-to-b ${buttonMode === "single-press" && pressedTeams[name] ? pressedColor : color}`}
-          />
-        ))}
+        {teams.map(
+          ({ name, displayName, teamButtonColor, teamButtonPressedColor }) => (
+            <button
+              key={name}
+              onClick={() => handleTeamPress(displayName)}
+              className={`w-20 h-20 rounded-full shadow-lg border-4 border-gray-300 transition-all duration-300 transform hover:scale-110 bg-gradient-to-b ${
+                buttonMode === "single-press" && pressedTeams[name]
+                  ? teamButtonPressedColor
+                  : teamButtonColor
+              }`}
+            />
+          )
+        )}
       </div>
 
       {/* Styr knappfunktioner */}
@@ -169,19 +180,30 @@ const AdminPage: React.FC = () => {
                 onChange={() => updateButtonMode(mode as ButtonMode)}
                 className="form-radio text-blue-600"
               />
-              <span>{mode === "inactive" ? "🚫 Inaktiv" : mode === "single-press" ? "✅ Engångstryck" : "🔄 Flera tryck"}</span>
+              <span>
+                {mode === "inactive"
+                  ? "🚫 Inaktiv"
+                  : mode === "single-press"
+                  ? "✅ Engångstryck"
+                  : "🔄 Flera tryck"}
+              </span>
             </label>
           ))}
         </div>
       </div>
 
-      <button onClick={clearClickHistory} className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition">
+      <button
+        onClick={clearClickHistory}
+        className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition"
+      >
         🗑️ Rensa knapphistorik
       </button>
 
       {/* Tryckhistorik */}
       <div className="mt-10 w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-2 text-center">📋 Tryckhistorik</h2>
+        <h2 className="text-xl font-semibold mb-2 text-center">
+          📋 Tryckhistorik
+        </h2>
         <table className="w-full bg-white rounded-lg shadow-md">
           <thead className="bg-gray-300">
             <tr>
@@ -194,7 +216,9 @@ const AdminPage: React.FC = () => {
               clicks.map((click, index) => (
                 <tr key={index} className="border-t border-gray-300">
                   <td className="py-2 px-4">{click.team}</td>
-                  <td className="py-2 px-4">{new Date(click.timestamp).toLocaleTimeString()}</td>
+                  <td className="py-2 px-4">
+                    {new Date(click.timestamp).toLocaleTimeString()}
+                  </td>
                 </tr>
               ))
             ) : (
