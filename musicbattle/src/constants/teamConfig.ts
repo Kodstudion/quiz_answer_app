@@ -15,6 +15,20 @@ export const teams = [
     teamButtonPressedColor: "from-red-700 to-red-900",
   },
   {
+    name: "LightBlue",
+    displayName: "Ljusblå",
+    navigateButtonColor: "bg-sky-500 hover:bg-sky-600 text-black",
+    teamButtonColor: "from-sky-500 to-sky-700",
+    teamButtonPressedColor: "from-sky-700 to-sky-900",
+  },
+  {
+    name: "Orange",
+    displayName: "Orange",
+    navigateButtonColor: "bg-orange-500 hover:bg-orange-600 text-black",
+    teamButtonColor: "from-orange-500 to-orange-700",
+    teamButtonPressedColor: "from-orange-700 to-orange-900",
+  },
+  {
     name: "Blue",
     displayName: "Blå",
     navigateButtonColor: "bg-blue-600 hover:bg-blue-700 text-white",
@@ -27,13 +41,6 @@ export const teams = [
     navigateButtonColor: "bg-yellow-500 hover:bg-yellow-600 text-black",
     teamButtonColor: "from-yellow-400 to-yellow-600",
     teamButtonPressedColor: "from-yellow-600 to-yellow-800",
-  },
-  {
-    name: "Orange",
-    displayName: "Orange",
-    navigateButtonColor: "bg-orange-500 hover:bg-orange-600 text-black",
-    teamButtonColor: "from-orange-500 to-orange-700",
-    teamButtonPressedColor: "from-orange-700 to-orange-900",
   },
   {
     name: "Purple",
@@ -55,12 +62,5 @@ export const teams = [
     navigateButtonColor: "bg-pink-500 hover:bg-pink-600 text-black",
     teamButtonColor: "from-pink-500 to-pink-700",
     teamButtonPressedColor: "from-pink-700 to-pink-900",
-  },
-  {
-    name: "LightBlue",
-    displayName: "Ljusblå",
-    navigateButtonColor: "bg-sky-500 hover:bg-sky-600 text-black",
-    teamButtonColor: "from-sky-500 to-sky-700",
-    teamButtonPressedColor: "from-sky-700 to-sky-900",
   },
 ];
