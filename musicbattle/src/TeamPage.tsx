@@ -5,6 +5,7 @@ import { database } from "./firebaseConfig";
 import VersionInfo from "./VersionInfo";
 import { teams } from "./constants/teamConfig";
 import { throttle } from "lodash";
+import TeamButton from "./components/TeamButton";
 
 interface ClickEntry {
   team: string;
@@ -106,20 +107,13 @@ const TeamPage: React.FC = () => {
           <h1 className="text-3xl font-bold mb-6">
             Lag: {currentTeam.displayName}
           </h1>
-          <button
+          <TeamButton
+            isPressed={isPressed}
+            buttonMode={buttonMode.current}
+            teamButtonColor={currentTeam.teamButtonColor}
+            teamButtonPressedColor={currentTeam.teamButtonPressedColor}
             onClick={handleButtonPress}
-            disabled={isButtonDisabled()}
-            className={`w-62 h-62 rounded-full shadow-lg border-4 border-gray-300 transition-all duration-300 transform hover:scale-110 bg-gradient-to-b ${
-              isPressed
-                ? currentTeam.teamButtonPressedColor
-                : currentTeam.teamButtonColor
-            } ${
-              buttonMode.current === "inactive"
-                ? "opacity-50 cursor-not-allowed"
-                : ""
-            }`}
-          ></button>
-
+          />
           <div className="mt-10 w-full max-w-md">
             <h2 className="text-xl font-semibold mb-2 text-center">
               📋 Tryckhistorik
