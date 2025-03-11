@@ -71,13 +71,6 @@ const TeamPage: React.FC = () => {
     }
   };
 
-  const isButtonDisabled = () => {
-    return (
-      buttonMode.current === "inactive" ||
-      (buttonMode.current === "single-press" && isPressed)
-    );
-  };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
       <button
