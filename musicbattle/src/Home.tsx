@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Settings } from "lucide-react";
 import VersionInfo from "./VersionInfo";
 import { teams } from "./constants/teamConfig";
+import Logo from "./assets/uadj_01_fixed.png";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ const Home: React.FC = () => {
       >
         <Settings className="w-6 h-6 text-black" />
       </button>
+      {/* Loggan högst upp */}
+      <img src={Logo} alt="Musikkampen Logo" className="w-40 mb-6" />
       {/* Titel och instruktion */}
       <h1 className="text-4xl font-extrabold mb-4 text-center tracking-wide">
         🎵 Välkommen till <span className="text-blue-600">Musikkampen</span> 🎵
