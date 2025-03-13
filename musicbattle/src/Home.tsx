@@ -21,6 +21,13 @@ const Home: React.FC = () => {
       {/* Loggan högst upp */}
       <img src={Logo} alt="Musikkampen Logo" className="w-40 mb-6" />
 
+      <button
+        onClick={() => navigate("/dashboard")}
+        className="absolute top-4 right-4 p-2 bg-gray-300 hover:bg-gray-400 rounded-full shadow-md transition duration-300"
+      >
+        📊
+      </button>
+
       {/* Titel och instruktion */}
       <h1 className="text-4xl font-extrabold mb-4 text-center tracking-wide">
         🎵 Välkommen till <span className="text-blue-600">Musikkampen</span> 🎵
