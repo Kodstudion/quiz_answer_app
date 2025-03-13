@@ -5,6 +5,7 @@ import BackToHomeButton from "./components/BackHomeButton";
 import ClickHistory from "./components/ClickHistory";
 import VersionInfo from "./VersionInfo";
 import FastestTeamDisplay from "./components/FastestTeamDisplay";
+import Logo from "./assets/uadj_01_fixed.png";
 
 interface ClickEntry {
   team: string;
@@ -52,8 +53,11 @@ const DashboardPage: React.FC = () => {
     <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
       <BackToHomeButton />
 
+      {/* Loggan högst upp */}
+      <img src={Logo} alt="Musikkampen Logo" className="w-40 mb-6" />
+
       <h1 className="text-4xl font-extrabold mb-4 text-center tracking-wide">
-        📊 Dashboard
+        Resultat
       </h1>
 
       <FastestTeamDisplay fastestTeam={fastestTeam} />
