@@ -8,6 +8,7 @@ import { throttle } from "lodash";
 import TeamButton from "./components/TeamButton";
 import BackToHomeButton from "./components/BackHomeButton";
 import GameIdSelector from "./components/GameIdSelector";
+import ClickHistory from "./components/ClickHistory";
 
 interface ClickEntry {
   team: string;
@@ -90,40 +91,7 @@ const TeamPage: React.FC = () => {
             onClick={handleButtonPress}
             teamName={currentTeam.displayName}
           />
-          <div className="mt-10 w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-2 text-center">
-              📋 Tryckhistorik
-            </h2>
-            <table className="w-full bg-white rounded-lg shadow-md">
-              <thead className="bg-gray-300">
-                <tr>
-                  <th className="py-2 px-4 text-left">Lag</th>
-                  <th className="py-2 px-4 text-left">Tidpunkt</th>
-                </tr>
-              </thead>
-              <tbody>
-                {clicks.length > 0 ? (
-                  clicks.map((click, index) => (
-                    <tr key={index} className="border-t border-gray-300">
-                      <td className="py-2 px-4">{click.team}</td>
-                      <td className="py-2 px-4">
-                        {new Date(click.timestamp).toLocaleTimeString()}
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan={2}
-                      className="py-2 px-4 text-center text-gray-500"
-                    >
-                      Inga tryck registrerade än
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+          <ClickHistory clicks={clicks} />
         </>
       )}
 

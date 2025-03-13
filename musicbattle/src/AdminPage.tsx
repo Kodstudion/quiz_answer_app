@@ -5,6 +5,10 @@ import VersionInfo from "./VersionInfo";
 import { teams } from "./constants/teamConfig";
 import TeamButton from "./components/TeamButton";
 import BackToHomeButton from "./components/BackHomeButton";
+import CreateGameButton from "./components/CreateGameButton";
+import EndGameButton from "./components/EndGameButton";
+import ButtonModeSelector from "./components/ButtonModeSelector";
+import ClickHistory from "./components/ClickHistory";
 type ButtonMode = "inactive" | "single-press" | "multi-press";
 
 interface ClickEntry {
@@ -124,23 +128,8 @@ const AdminPage: React.FC = () => {
       )}
 
       <div className="flex gap-4 mb-6">
-        {!gameId && (
-          <button
-            onClick={createNewGame}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition"
-          >
-            🎲 Skapa ny spelomgång
-          </button>
-        )}
-
-        {gameId && (
-          <button
-            onClick={endGame}
-            className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition"
-          >
-            🛑 Avsluta spel
-          </button>
-        )}
+        {!gameId && <CreateGameButton onCreateGame={createNewGame} />}
+        {gameId && <EndGameButton gameId={gameId} onEndGame={endGame} />}
       </div>
 
       {/* Lagknappar */}
@@ -165,26 +154,10 @@ const AdminPage: React.FC = () => {
       {/* Styr knappfunktioner */}
       <div className="flex flex-col items-center gap-4 mt-6">
         <span className="text-lg font-semibold">🕹️ Styr lagens knappar:</span>
-        <div className="flex flex-col items-start">
-          {["inactive", "single-press", "multi-press"].map((mode) => (
-            <label key={mode} className="inline-flex items-center space-x-2">
-              <input
-                type="radio"
-                value={mode}
-                checked={buttonMode === mode}
-                onChange={() => updateButtonMode(mode as ButtonMode)}
-                className="form-radio text-blue-600"
-              />
-              <span>
-                {mode === "inactive"
-                  ? "🚫 Inaktiv"
-                  : mode === "single-press"
-                  ? "✅ Engångstryck"
-                  : "🔄 Flera tryck"}
-              </span>
-            </label>
-          ))}
-        </div>
+        <ButtonModeSelector
+          currentMode={buttonMode}
+          onChange={updateButtonMode}
+        />
       </div>
 
       <button
@@ -194,38 +167,7 @@ const AdminPage: React.FC = () => {
         🗑️ Rensa knapphistorik
       </button>
 
-      {/* Tryckhistorik */}
-      <div className="mt-10 w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-2 text-center">
-          📋 Tryckhistorik
-        </h2>
-        <table className="w-full bg-white rounded-lg shadow-md">
-          <thead className="bg-gray-300">
-            <tr>
-              <th className="py-2 px-4 text-left">Lag</th>
-              <th className="py-2 px-4 text-left">Tidpunkt</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clicks.length > 0 ? (
-              clicks.map((click, index) => (
-                <tr key={index} className="border-t border-gray-300">
-                  <td className="py-2 px-4">{click.team}</td>
-                  <td className="py-2 px-4">
-                    {new Date(click.timestamp).toLocaleTimeString()}
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={2} className="py-2 px-4 text-center text-gray-500">
-                  Inga tryck registrerade än
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      <ClickHistory clicks={clicks} />
 
       <VersionInfo />
     </div>
