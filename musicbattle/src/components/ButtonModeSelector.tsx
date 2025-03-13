@@ -13,23 +13,23 @@ const ButtonModeSelector: React.FC<ButtonModeSelectorProps> = ({
 }) => {
   const modes: ButtonMode[] = ["inactive", "single-press", "multi-press"];
 
-  const modeLabels = {
-    inactive: "Inaktiv",
-    "single-press": "Engångstryck",
-    "multi-press": "Flera tryck",
-  };
-
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-start">
       {modes.map((mode) => (
-        <label key={mode} className="flex items-center gap-2">
+        <label key={mode} className="inline-flex items-center space-x-2">
           <input
             type="radio"
             value={mode}
             checked={currentMode === mode}
-            onChange={() => onChange(mode)}
+            onChange={() => onChange(mode as ButtonMode)}
           />
-          {modeLabels[mode]}
+          <span>
+            {mode === "inactive"
+              ? "🚫 Inaktiv"
+              : mode === "single-press"
+              ? "✅ Engångstryck"
+              : "🔄 Flera tryck"}
+          </span>
         </label>
       ))}
     </div>

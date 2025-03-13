@@ -9,6 +9,7 @@ import CreateGameButton from "./components/CreateGameButton";
 import EndGameButton from "./components/EndGameButton";
 import ButtonModeSelector from "./components/ButtonModeSelector";
 import ClickHistory from "./components/ClickHistory";
+import ClearClickHistoryButton from "./components/ClearClickHistoryButton";
 type ButtonMode = "inactive" | "single-press" | "multi-press";
 
 interface ClickEntry {
@@ -159,16 +160,8 @@ const AdminPage: React.FC = () => {
           onChange={updateButtonMode}
         />
       </div>
-
-      <button
-        onClick={clearClickHistory}
-        className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition"
-      >
-        🗑️ Rensa knapphistorik
-      </button>
-
+      <ClearClickHistoryButton onClear={clearClickHistory} />
       <ClickHistory clicks={clicks} />
-
       <VersionInfo />
     </div>
   );
