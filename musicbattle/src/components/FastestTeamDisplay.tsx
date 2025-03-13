@@ -25,7 +25,9 @@ const FastestTeamDisplay: React.FC<FastestTeamDisplayProps> = ({
     <div
       className={`mb-6 p-4 ${backgroundColor} rounded-lg shadow-md text-center`}
     >
-      <h2 className="text-2xl font-semibold">🚀 Snabbast på knappen:</h2>
+      <h2 className={`text-2xl font-semibold ${textColor}`}>
+        Snabbast på knappen:
+      </h2>
       <p className={`text-3xl font-bold mt-2 ${textColor}`}>{fastestTeam}</p>
     </div>
   );
