@@ -34,7 +34,7 @@ export const teams = [
     backgroundColor: "bg-orange-500",
     textColor: "text-black",
     teamButtonColor: "from-orange-500 to-orange-700",
-    teamButtonPressedColor: "from-orange-700 to-orange-900",
+    teamButtonPressedColor: "from-orange-300 to-orange-600",
   },
   {
     name: "Blue",
