@@ -7,6 +7,7 @@ import { teams } from "./constants/teamConfig";
 import { throttle } from "lodash";
 import TeamButton from "./components/TeamButton";
 import BackToHomeButton from "./components/BackHomeButton";
+import GameIdSelector from "./components/GameIdSelector";
 
 interface ClickEntry {
   team: string;
@@ -75,20 +76,7 @@ const TeamPage: React.FC = () => {
     <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
       <BackToHomeButton />
       {!gameId ? (
-        <div className="flex flex-col items-center gap-4">
-          <h1 className="text-2xl font-bold">Välj spel-ID</h1>
-          <div className="grid grid-cols-3 gap-4">
-            {Array.from({ length: 9 }, (_, i) => i + 1).map((id) => (
-              <button
-                key={id}
-                onClick={() => handleGameIdSelect(id)}
-                className="bg-blue-500 hover:bg-blue-600 text-white w-16 h-16 rounded-lg shadow-md text-xl"
-              >
-                {id}
-              </button>
-            ))}
-          </div>
-        </div>
+        <GameIdSelector onSelect={handleGameIdSelect} />
       ) : (
         <>
           <h1 className="text-3xl font-bold mb-6">
