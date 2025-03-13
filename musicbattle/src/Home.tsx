@@ -17,8 +17,10 @@ const Home: React.FC = () => {
       >
         <Settings className="w-6 h-6 text-black" />
       </button>
+
       {/* Loggan högst upp */}
       <img src={Logo} alt="Musikkampen Logo" className="w-40 mb-6" />
+
       {/* Titel och instruktion */}
       <h1 className="text-4xl font-extrabold mb-4 text-center tracking-wide">
         🎵 Välkommen till <span className="text-blue-600">Musikkampen</span> 🎵
@@ -26,6 +28,7 @@ const Home: React.FC = () => {
       <p className="text-lg text-center mb-6">
         Välj ditt lags ballongfärg för att börja spela!
       </p>
+
       {/* Grid med 2 kolumner och 4 rader */}
       <div className="grid grid-cols-2 gap-4 w-full max-w-md">
         {teams.map(({ name, displayName, navigateButtonColor }) => (
@@ -38,7 +41,8 @@ const Home: React.FC = () => {
           </button>
         ))}
       </div>
-      <VersionInfo /> {/* ✅ Flyttad utanför div-containern */}
+
+      <VersionInfo />
     </div>
   );
 };

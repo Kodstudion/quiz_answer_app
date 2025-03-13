@@ -122,13 +122,17 @@ const AdminPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
+      {/* Hem knapp längst upp till vänster*/}
       <BackToHomeButton />
+
       {/* Loggan högst upp till höger*/}
       <img
         src={Logo}
         alt="Musikkampen Logo"
         className="w-20 mb-6 absolute top-4 right-4"
       />
+
+      {/* Visa aktivt spel-ID om det finns ett aktivt spel*/}
       {gameId && (
         <div className="mb-4 text-xl font-semibold bg-white p-4 rounded-lg shadow-md">
           🏆 Aktivt spel-ID: <span className="text-blue-600">{gameId}</span>
@@ -136,11 +140,14 @@ const AdminPage: React.FC = () => {
       )}
 
       <div className="flex gap-4 mb-6">
+        {/* Visa knapp för att skapa spel det inte finns ett aktivt spel*/}
         {!gameId && <CreateGameButton onCreateGame={createNewGame} />}
+
+        {/* Visa knapp för att avsluta spel det finns ett aktivt spel*/}
         {gameId && <EndGameButton gameId={gameId} onEndGame={endGame} />}
       </div>
 
-      {/* Lagknappar */}
+      {/* Lagknappar för admin att testa med*/}
       <div className="grid grid-cols-4 gap-4">
         {teams.map(
           ({ name, displayName, teamButtonColor, teamButtonPressedColor }) => (
@@ -159,7 +166,7 @@ const AdminPage: React.FC = () => {
         )}
       </div>
 
-      {/* Styr knappfunktioner */}
+      {/* Styr lagknapparnas funktion */}
       <div className="flex flex-col items-center gap-4 mt-6">
         <span className="text-lg font-semibold">🕹️ Styr lagens knappar:</span>
         <ButtonModeSelector
@@ -167,8 +174,13 @@ const AdminPage: React.FC = () => {
           onChange={updateButtonMode}
         />
       </div>
+
+      {/* Knapp för att rensa historiken */}
       <ClearClickHistoryButton onClear={clearClickHistory} />
+
+      {/* Visa historik över klick*/}
       <ClickHistory clicks={clicks} />
+
       <VersionInfo />
     </div>
   );

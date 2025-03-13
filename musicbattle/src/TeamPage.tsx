@@ -76,13 +76,17 @@ const TeamPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
+      {/* Hem knapp längst upp till vänster*/}
       <BackToHomeButton />
+
       {/* Loggan högst upp till höger*/}
       <img
         src={Logo}
         alt="Musikkampen Logo"
         className="w-20 mb-6 absolute top-4 right-4"
       />
+
+      {/* Först får användaren välja spel och sen visas lagknappen*/}
       {!gameId ? (
         <GameIdSelector onSelect={handleGameIdSelect} />
       ) : (
@@ -90,6 +94,8 @@ const TeamPage: React.FC = () => {
           <h1 className="text-3xl font-bold mb-6">
             Lag: {currentTeam.displayName}
           </h1>
+
+          {/* Lagknapp */}
           <TeamButton
             isPressed={isPressed}
             buttonMode={buttonMode.current}
@@ -98,6 +104,8 @@ const TeamPage: React.FC = () => {
             onClick={handleButtonPress}
             teamName={currentTeam.displayName}
           />
+
+          {/* Visa historik över klick*/}
           <ClickHistory clicks={clicks} />
         </>
       )}
