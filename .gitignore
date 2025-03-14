@@ -1,2 +1,3 @@
 *.pptx
-*.env
+musicbattle/.env
+musicbattle/.env.production
