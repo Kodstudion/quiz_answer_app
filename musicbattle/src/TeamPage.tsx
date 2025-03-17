@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { ref, onValue, push } from "firebase/database";
 import { database } from "./firebaseConfig";
@@ -7,7 +7,6 @@ import { teams } from "./constants/teamConfig";
 import { throttle } from "lodash";
 import TeamButton from "./components/TeamButton";
 import BackToHomeButton from "./components/BackHomeButton";
-import GameIdSelector from "./components/GameIdSelector";
 import ClickHistory from "./components/ClickHistory";
 import Logo from "./assets/uadj_01_fixed.png";
 
@@ -18,7 +17,7 @@ interface ClickEntry {
 
 const TeamPage: React.FC = () => {
   const { teamName } = useParams<{ teamName: string }>();
-  const [gameId, setGameId] = useState<number | null>(null);
+
   const buttonMode = useRef<string>("inactive");
   const [isPressed, setIsPressed] = useState(false);
   const [clicks, setClicks] = useState<ClickEntry[]>([]);
@@ -27,15 +26,15 @@ const TeamPage: React.FC = () => {
     teams.find((team) => team.name.toLowerCase() === teamName?.toLowerCase()) ||
     teams[0];
 
-  const listenToButtonMode = (id: number) => {
-    const modeRef = ref(database, `games/${id}/buttonMode`);
+  const listenToButtonMode = () => {
+    const modeRef = ref(database, `buttonMode`);
     onValue(modeRef, (snapshot) => {
       buttonMode.current = snapshot.val() || "inactive";
     });
   };
 
-  const listenToClicks = (id: number) => {
-    const clicksRef = ref(database, `games/${id}/clicks`);
+  const listenToClicks = useCallback(() => {
+    const clicksRef = ref(database, `clicks`);
     onValue(
       clicksRef,
       throttle((snapshot) => {
@@ -51,19 +50,22 @@ const TeamPage: React.FC = () => {
         }
       }, 300)
     );
-  };
+  }, [currentTeam.displayName]);
 
-  const handleGameIdSelect = (id: number) => {
-    setGameId(id);
-    listenToClicks(id);
-    listenToButtonMode(id);
-  };
+  useEffect(() => {
+    listenToClicks();
+    listenToButtonMode();
+
+    return () => {
+      // Här kan du lägga till kod för att ta bort lyssnare om det behövs
+    };
+  }, [currentTeam, listenToClicks]);
 
   const handleButtonPress = (team: string) => {
     if (buttonMode.current === "inactive") return;
     if (buttonMode.current === "single-press" && isPressed) return;
 
-    const clickRef = ref(database, `games/${gameId}/clicks`);
+    const clickRef = ref(database, `clicks`);
     push(clickRef, {
       team,
       timestamp: new Date().toISOString(),
@@ -86,29 +88,24 @@ const TeamPage: React.FC = () => {
         className="w-20 mb-6 absolute top-4 right-4"
       />
 
-      {/* Först får användaren välja spel och sen visas lagknappen*/}
-      {!gameId ? (
-        <GameIdSelector onSelect={handleGameIdSelect} />
-      ) : (
-        <>
-          <h1 className="text-3xl font-bold mb-6">
-            Lag: {currentTeam.displayName}
-          </h1>
+      <>
+        <h1 className="text-3xl font-bold mb-6">
+          Lag: {currentTeam.displayName}
+        </h1>
 
-          {/* Lagknapp */}
-          <TeamButton
-            isPressed={isPressed}
-            buttonMode={buttonMode.current}
-            teamButtonColor={currentTeam.teamButtonColor}
-            teamButtonPressedColor={currentTeam.teamButtonPressedColor}
-            onClick={handleButtonPress}
-            teamName={currentTeam.displayName}
-          />
+        {/* Lagknapp */}
+        <TeamButton
+          isPressed={isPressed}
+          buttonMode={buttonMode.current}
+          teamButtonColor={currentTeam.teamButtonColor}
+          teamButtonPressedColor={currentTeam.teamButtonPressedColor}
+          onClick={handleButtonPress}
+          teamName={currentTeam.displayName}
+        />
 
-          {/* Visa historik över klick*/}
-          <ClickHistory clicks={clicks} />
-        </>
-      )}
+        {/* Visa historik över klick*/}
+        <ClickHistory clicks={clicks} />
+      </>
 
       <VersionInfo />
     </div>

@@ -17,33 +17,21 @@ const DashboardPage: React.FC = () => {
   const [fastestTeam, setFastestTeam] = useState<string>("");
 
   useEffect(() => {
-    // Kollar vilket spel som är aktivt
-    const gamesRef = ref(database, "games");
-    const unsubscribe = onValue(gamesRef, (snapshot) => {
-      const data = snapshot.val();
-      if (!data) {
-        setClicks([]);
+    // Lyssna på klickhistoriken i databasen
+    const clicksRef = ref(database, `clicks`);
+    const unsubscribe = onValue(clicksRef, (clickSnapshot) => {
+      const clickData = clickSnapshot.val();
+      const clicksArray = clickData
+        ? (Object.values(clickData) as ClickEntry[])
+        : [];
+      setClicks(clicksArray);
+
+      // Visa snabbaste laget om det finns klick
+      if (clicksArray.length > 0) {
+        setFastestTeam(clicksArray[0].team); // Anta att det första laget är det snabbaste
+      } else {
         setFastestTeam("");
-        return;
       }
-
-      const activeGameId = Object.keys(data)[0];
-      const clicksRef = ref(database, `games/${activeGameId}/clicks`);
-
-      // Lyssnar på klickhistoriken i det aktiva spelet
-      onValue(clicksRef, (clickSnapshot) => {
-        const clickData = clickSnapshot.val();
-        const clicksArray = clickData
-          ? (Object.values(clickData) as ClickEntry[])
-          : [];
-        setClicks(clicksArray);
-
-        if (clicksArray.length > 0) {
-          setFastestTeam(clicksArray[0].team); // Första laget som klickade
-        } else {
-          setFastestTeam("");
-        }
-      });
     });
 
     return () => unsubscribe(); // Avregistrera lyssnare
@@ -68,5 +56,4 @@ const DashboardPage: React.FC = () => {
     </div>
   );
 };
-
 export default DashboardPage;
