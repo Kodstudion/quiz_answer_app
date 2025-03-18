@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ref, onValue } from "firebase/database";
+import { onSnapshot, collection } from "firebase/firestore";
 import { database } from "./firebaseConfig";
 import BackToHomeButton from "./components/BackHomeButton";
 import ClickHistory from "./components/ClickHistory";
@@ -18,12 +18,12 @@ const DashboardPage: React.FC = () => {
 
   useEffect(() => {
     // Lyssna på klickhistoriken i databasen
-    const clicksRef = ref(database, `clicks`);
-    const unsubscribe = onValue(clicksRef, (clickSnapshot) => {
-      const clickData = clickSnapshot.val();
-      const clicksArray = clickData
-        ? (Object.values(clickData) as ClickEntry[])
-        : [];
+    const clicksRef = collection(database, `clicks`);
+    const unsubscribe = onSnapshot(clicksRef, (snapshot) => {
+      const clicksArray: ClickEntry[] = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        timestamp: doc.data().timestamp,
+      })) as ClickEntry[];
       setClicks(clicksArray);
 
       // Visa snabbaste laget om det finns klick

@@ -30,7 +30,8 @@ const Home: React.FC = () => {
 
       {/* Titel och instruktion */}
       <h1 className="text-4xl font-extrabold mb-4 text-center tracking-wide">
-        🎵 Välkommen till <span className="text-blue-600">Musikkampen</span> 🎵
+        🎵 Välkommen till{" "}
+        <span className="text-blue-600 musikkampen-title">Musikkampen</span> 🎵
       </h1>
       <p className="text-lg text-center mb-6">
         Välj ditt lags ballongfärg för att börja spela!
