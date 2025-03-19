@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ref, set, push, onValue } from "firebase/database";
 import { database } from "./firebaseConfig";
 import VersionInfo from "./VersionInfo";
@@ -9,6 +9,7 @@ import ButtonModeSelector from "./components/ButtonModeSelector";
 import ClickHistory from "./components/ClickHistory";
 import ClearClickHistoryButton from "./components/ClearClickHistoryButton";
 import Logo from "./assets/uadj_01_fixed.png";
+
 type ButtonMode = "inactive" | "single-press" | "multi-press";
 
 interface ClickEntry {
@@ -17,30 +18,47 @@ interface ClickEntry {
 }
 
 const AdminPage: React.FC = () => {
-  //const [gameId, setGameId] = useState<number | null>(null);
+  // State för att hantera knappläge och klickhistorik
   const [buttonMode, setButtonMode] = useState<ButtonMode>("inactive");
   const [clicks, setClicks] = useState<ClickEntry[]>([]);
   const [pressedTeams, setPressedTeams] = useState<{ [key: string]: boolean }>(
     {}
   );
 
+  // Hämta knappläget från databasen vid inladdning
+  useEffect(() => {
+    const modeRef = ref(database, `buttonMode`);
+    onValue(modeRef, (snapshot) => {
+      const mode = snapshot.val();
+      if (mode) {
+        setButtonMode(mode as ButtonMode);
+      } else {
+        setButtonMode("inactive"); // Sätt till inactive om inget värde finns
+        set(ref(database, `buttonMode`), "inactive"); // Sätt värdet i databasen
+      }
+    });
+  }, []);
+
+  // Rensa klickhistorik
   const clearClickHistory = () => {
     set(ref(database, `clicks`), {});
     setClicks([]);
-    // Återaktivera alla knappar för engångstryck
     if (buttonMode === "single-press") {
       setPressedTeams({});
     }
   };
+
+  // Uppdatera knappläget i databasen
   const updateButtonMode = (mode: ButtonMode) => {
     set(ref(database, `buttonMode`), mode);
     setButtonMode(mode);
     setPressedTeams({});
   };
 
+  // Hantera knapptryckningar
   const handleButtonPress = (team: string) => {
-    if (buttonMode === "inactive") return;
-    if (buttonMode === "single-press" && pressedTeams[team]) return;
+    if (buttonMode === "inactive") return; // Inaktivera om knappläget är inaktivt
+    if (buttonMode === "single-press" && pressedTeams[team]) return; // Förhindra flera tryckningar i single-press-läge
 
     const clickRef = ref(database, `clicks`);
     push(clickRef, {
@@ -49,25 +67,30 @@ const AdminPage: React.FC = () => {
     });
 
     if (buttonMode === "single-press") {
-      setPressedTeams((prev) => ({ ...prev, [team]: true }));
+      setPressedTeams((prev) => ({ ...prev, [team]: true })); // Spara tryckta lag
     }
   };
 
-  const listenForClicks = () => {
+  // Lyssna på klick i databasen
+  const listenForClicks = useCallback(() => {
     const clicksRef = ref(database, `clicks`);
     onValue(clicksRef, (snapshot) => {
       const data = snapshot.val();
       const clicksData = data ? (Object.values(data) as ClickEntry[]) : [];
       setClicks(clicksData);
+      if (buttonMode === "single-press" && clicksData.length > 0) {
+        const teamName = clicksData[clicksData.length - 1].team; // Hämta det senaste laget som klickade
+        setPressedTeams((prev) => ({ ...prev, [teamName]: true })); // Uppdatera tryckta lag
+      }
     });
-  };
+  }, [buttonMode]);
 
   useEffect(() => {
-    listenForClicks();
+    listenForClicks(); // Starta lyssnaren
     return () => {
       // Här kan du lägga till kod för att ta bort lyssnare om det behövs
     };
-  }, []);
+  }, [listenForClicks]);
 
   return (
     <div className="flex flex-col min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
@@ -77,7 +100,7 @@ const AdminPage: React.FC = () => {
         <img src={Logo} alt="Musikkampen Logo" className="w-20 ml-auto" />
       </div>
 
-      {/* Lagknappar för admin att testa med*/}
+      {/* Lagknappar för admin att testa med */}
       <div className="flex flex-col items-center justify-center flex-grow">
         <div className="grid grid-cols-4 gap-4 mb-4">
           {teams.map(
@@ -89,7 +112,7 @@ const AdminPage: React.FC = () => {
             }) => (
               <TeamButton
                 key={name}
-                isPressed={pressedTeams[name]}
+                isPressed={pressedTeams[displayName]}
                 buttonMode={buttonMode}
                 teamButtonColor={teamButtonColor}
                 teamButtonPressedColor={teamButtonPressedColor}
@@ -114,7 +137,7 @@ const AdminPage: React.FC = () => {
         {/* Knapp för att rensa historiken */}
         <ClearClickHistoryButton onClear={clearClickHistory} />
 
-        {/* Visa historik över klick*/}
+        {/* Visa historik över klick */}
         <ClickHistory clicks={clicks} />
 
         <VersionInfo />

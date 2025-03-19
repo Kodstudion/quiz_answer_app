@@ -24,13 +24,21 @@ const TeamButton: React.FC<TeamButtonProps> = ({
   const isDisabled =
     buttonMode === "inactive" || (buttonMode === "single-press" && isPressed);
 
+  // Använd teamButtonColor oavsett om knappen är tryckt eller inte för multi-press
+  const buttonColor =
+    buttonMode === "multi-press"
+      ? teamButtonColor
+      : isPressed
+      ? teamButtonPressedColor
+      : teamButtonColor;
+
   return (
     <button
       onClick={() => onClick(teamName)}
-      disabled={isPressed || isDisabled}
-      className={`${width} ${height} rounded-full shadow-lg border-4 border-gray-300 transition-all duration-300 transform hover:scale-110 bg-gradient-to-b ${
-        isPressed ? teamButtonPressedColor : teamButtonColor
-      } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+      disabled={isDisabled}
+      className={`${width} ${height} rounded-full shadow-lg border-4 border-gray-300 transition-all duration-300 transform hover:scale-110 bg-gradient-to-b ${buttonColor} ${
+        isDisabled ? "opacity-50 cursor-not-allowed" : ""
+      }`}
     ></button>
   );
 };

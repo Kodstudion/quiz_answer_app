@@ -9,6 +9,7 @@ import TeamButton from "./components/TeamButton";
 import BackToHomeButton from "./components/BackHomeButton";
 import ClickHistory from "./components/ClickHistory";
 import Logo from "./assets/uadj_01_fixed.png";
+type ButtonMode = "inactive" | "single-press" | "multi-press";
 
 interface ClickEntry {
   team: string;
@@ -17,7 +18,7 @@ interface ClickEntry {
 
 const TeamPage: React.FC = () => {
   const { teamName } = useParams<{ teamName: string }>();
-  const buttonMode = useRef<string>("inactive");
+  const [buttonMode, setButtonMode] = useState<ButtonMode>("inactive");
   const [isPressed, setIsPressed] = useState(false);
   const [clicks, setClicks] = useState<ClickEntry[]>([]);
 
@@ -28,7 +29,7 @@ const TeamPage: React.FC = () => {
   const listenToButtonMode = () => {
     const modeRef = ref(database, `buttonMode`);
     onValue(modeRef, (snapshot) => {
-      buttonMode.current = snapshot.val() || "inactive";
+      setButtonMode((snapshot.val() || "inactive") as ButtonMode);
     });
   };
 
@@ -41,7 +42,7 @@ const TeamPage: React.FC = () => {
         const clicksData = data ? (Object.values(data) as ClickEntry[]) : [];
         setClicks(clicksData);
 
-        if (buttonMode.current === "single-press") {
+        if (buttonMode === "single-press") {
           const hasTeamClicked = clicksData.some(
             (click) => click.team === currentTeam.displayName
           );
@@ -49,7 +50,7 @@ const TeamPage: React.FC = () => {
         }
       }, 300)
     );
-  }, [currentTeam.displayName]);
+  }, [currentTeam.displayName, buttonMode]);
 
   useEffect(() => {
     listenToClicks();
@@ -61,8 +62,7 @@ const TeamPage: React.FC = () => {
   }, [currentTeam, listenToClicks]);
 
   const handleButtonPress = (team: string) => {
-    if (buttonMode.current === "inactive") return;
-    if (buttonMode.current === "single-press" && isPressed) return;
+    if (buttonMode === "inactive") return;
 
     const clickRef = ref(database, `clicks`);
     push(clickRef, {
@@ -70,8 +70,14 @@ const TeamPage: React.FC = () => {
       timestamp: new Date().toISOString(),
     });
 
-    if (buttonMode.current === "single-press") {
-      setIsPressed(true);
+    // Hantera single-press
+    if (buttonMode === "single-press") {
+      if (!isPressed) {
+        setIsPressed(true);
+      }
+    } else if (buttonMode === "multi-press") {
+      // Ingen inaktivering av knappen, tillåt flera tryckningar
+      // Här kan du lägga till logik för att hantera visuell feedback om det behövs
     }
   };
 
@@ -92,7 +98,7 @@ const TeamPage: React.FC = () => {
 
         <TeamButton
           isPressed={isPressed}
-          buttonMode={buttonMode.current}
+          buttonMode={buttonMode}
           teamButtonColor={currentTeam.teamButtonColor}
           teamButtonPressedColor={currentTeam.teamButtonPressedColor}
           onClick={handleButtonPress}
