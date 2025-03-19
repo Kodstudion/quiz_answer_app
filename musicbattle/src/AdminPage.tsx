@@ -79,8 +79,12 @@ const AdminPage: React.FC = () => {
       const clicksData = data ? (Object.values(data) as ClickEntry[]) : [];
       setClicks(clicksData);
       if (buttonMode === "single-press" && clicksData.length > 0) {
-        const teamName = clicksData[clicksData.length - 1].team; // Hämta det senaste laget som klickade
-        setPressedTeams((prev) => ({ ...prev, [teamName]: true })); // Uppdatera tryckta lag
+        // Gå igenom alla klickdata och uppdatera pressedTeams
+        const updatedPressedTeams = clicksData.reduce((acc, click) => {
+          acc[click.team] = true; // Sätt laget som tryckt till true
+          return acc;
+        }, {} as { [key: string]: boolean });
+        setPressedTeams(updatedPressedTeams); // Uppdatera pressedTeams med alla tryckta lag
       }
     });
   }, [buttonMode]);

@@ -6,12 +6,12 @@
   "homepage": "https://kodstudion.github.io/quiz_answer_app/",
   "scripts": {
     "dev": "vite",
-    "build": "powershell -Command \"$hash = (git rev-parse --short HEAD); \\\"VITE_APP_VERSION=$hash\\\" | Out-File -Encoding ASCII -FilePath .env; \\\"VITE_APP_VERSION=$hash\\\" | Out-File -Encoding ASCII -FilePath .env.production; npm run vite-build\"",
+    "build": "powershell -Command \"$hash = (git rev-parse --short HEAD); (Get-Content .env) -replace 'VITE_APP_VERSION=.*', \\\"VITE_APP_VERSION=$hash\\\" | Set-Content .env; (Get-Content .env.production) -replace 'VITE_APP_VERSION=.*', \\\"VITE_APP_VERSION=$hash\\\" | Set-Content .env.production; npm run vite-build\"",
     "vite-build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist",
-    "set-version": "powershell -Command \"$hash = (git rev-parse --short HEAD); \\\"VITE_APP_VERSION=$hash\\\" | Out-File -Encoding ASCII -FilePath .env;\""
+    "set-version": "powershell -Command \"$hash = (git rev-parse --short HEAD); (Get-Content .env) -replace 'VITE_APP_VERSION=.*', \\\"VITE_APP_VERSION=$hash\\\" | Set-Content .env;\""
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.6",
