@@ -70,52 +70,55 @@ const AdminPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
-      {/* Hem knapp längst upp till vänster*/}
-      <BackToHomeButton />
-
-      {/* Loggan högst upp till höger*/}
-      <img
-        src={Logo}
-        alt="Musikkampen Logo"
-        className="w-20 mb-6 absolute top-4 right-4"
-      />
+    <div className="flex flex-col min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
+      {/* Header-sektion */}
+      <div className="flex justify-between items-center mb-4">
+        <BackToHomeButton />
+        <img src={Logo} alt="Musikkampen Logo" className="w-20 ml-auto" />
+      </div>
 
       {/* Lagknappar för admin att testa med*/}
-      <div className="grid grid-cols-4 gap-4">
-        {teams.map(
-          ({ name, displayName, teamButtonColor, teamButtonPressedColor }) => (
-            <TeamButton
-              key={name}
-              isPressed={pressedTeams[name]}
-              buttonMode={buttonMode}
-              teamButtonColor={teamButtonColor}
-              teamButtonPressedColor={teamButtonPressedColor}
-              onClick={handleButtonPress}
-              teamName={displayName}
-              width="w-20"
-              height="h-20"
-            />
-          )
-        )}
+      <div className="flex flex-col items-center justify-center flex-grow">
+        <div className="grid grid-cols-4 gap-4 mb-4">
+          {teams.map(
+            ({
+              name,
+              displayName,
+              teamButtonColor,
+              teamButtonPressedColor,
+            }) => (
+              <TeamButton
+                key={name}
+                isPressed={pressedTeams[name]}
+                buttonMode={buttonMode}
+                teamButtonColor={teamButtonColor}
+                teamButtonPressedColor={teamButtonPressedColor}
+                onClick={handleButtonPress}
+                teamName={displayName}
+                width="w-20"
+                height="h-20"
+              />
+            )
+          )}
+        </div>
+
+        {/* Styr lagknapparnas funktion */}
+        <div className="flex flex-col items-center gap-4 mt-6">
+          <span className="text-lg font-semibold">🕹️ Styr lagens knappar:</span>
+          <ButtonModeSelector
+            currentMode={buttonMode}
+            onChange={updateButtonMode}
+          />
+        </div>
+
+        {/* Knapp för att rensa historiken */}
+        <ClearClickHistoryButton onClear={clearClickHistory} />
+
+        {/* Visa historik över klick*/}
+        <ClickHistory clicks={clicks} />
+
+        <VersionInfo />
       </div>
-
-      {/* Styr lagknapparnas funktion */}
-      <div className="flex flex-col items-center gap-4 mt-6">
-        <span className="text-lg font-semibold">🕹️ Styr lagens knappar:</span>
-        <ButtonModeSelector
-          currentMode={buttonMode}
-          onChange={updateButtonMode}
-        />
-      </div>
-
-      {/* Knapp för att rensa historiken */}
-      <ClearClickHistoryButton onClear={clearClickHistory} />
-
-      {/* Visa historik över klick*/}
-      <ClickHistory clicks={clicks} />
-
-      <VersionInfo />
     </div>
   );
 };

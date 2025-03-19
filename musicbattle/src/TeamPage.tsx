@@ -17,7 +17,6 @@ interface ClickEntry {
 
 const TeamPage: React.FC = () => {
   const { teamName } = useParams<{ teamName: string }>();
-
   const buttonMode = useRef<string>("inactive");
   const [isPressed, setIsPressed] = useState(false);
   const [clicks, setClicks] = useState<ClickEntry[]>([]);
@@ -77,23 +76,20 @@ const TeamPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
-      {/* Hem knapp längst upp till vänster*/}
-      <BackToHomeButton />
+    <div className="flex flex-col min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
+      {/* Header-sektion */}
+      <div className="flex justify-between items-center mb-4">
+        <BackToHomeButton />
+        <img src={Logo} alt="Musikkampen Logo" className="w-20 ml-auto" />{" "}
+        {/* Använd ml-auto för att placera logotypen till höger */}
+      </div>
 
-      {/* Loggan högst upp till höger*/}
-      <img
-        src={Logo}
-        alt="Musikkampen Logo"
-        className="w-20 mb-6 absolute top-4 right-4"
-      />
-
-      <>
+      {/* Centrera innehållet */}
+      <div className="flex flex-col items-center justify-center flex-grow">
         <h1 className="text-3xl font-bold mb-6">
           Lag: {currentTeam.displayName}
         </h1>
 
-        {/* Lagknapp */}
         <TeamButton
           isPressed={isPressed}
           buttonMode={buttonMode.current}
@@ -103,11 +99,9 @@ const TeamPage: React.FC = () => {
           teamName={currentTeam.displayName}
         />
 
-        {/* Visa historik över klick*/}
         <ClickHistory clicks={clicks} />
-      </>
-
-      <VersionInfo />
+        <VersionInfo />
+      </div>
     </div>
   );
 };

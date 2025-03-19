@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-body,
-html {
-  font-family: "Gochi Hand", cursive;
+/* Specifik stil för Musikkampen */
+.musikkampen-title {
+  font-family: "Gochi Hand"; /* Använd Gochi Hand för Musikkampen */
 }
