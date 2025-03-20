@@ -67,7 +67,6 @@ const TeamPage: React.FC = () => {
     const clickRef = ref(database, `clicks`);
     push(clickRef, {
       team,
-      timestamp: new Date().toISOString(),
     });
 
     // Hantera single-press

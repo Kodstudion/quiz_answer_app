@@ -62,8 +62,7 @@ const AdminPage: React.FC = () => {
 
     const clickRef = ref(database, `clicks`);
     push(clickRef, {
-      team,
-      timestamp: new Date().toISOString(),
+      team, // Endast lagnamnet registreras
     });
 
     if (buttonMode === "single-press") {
