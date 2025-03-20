@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { ref, onValue, push } from "firebase/database";
 import { database } from "./firebaseConfig";
-import VersionInfo from "./VersionInfo";
+import VersionInfo from "./components/VersionInfo";
 import { teams } from "./constants/teamConfig";
 import { throttle } from "lodash";
 import TeamButton from "./components/TeamButton";

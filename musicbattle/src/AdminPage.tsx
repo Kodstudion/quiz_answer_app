@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ref, set, push, onValue } from "firebase/database";
 import { database } from "./firebaseConfig";
-import VersionInfo from "./VersionInfo";
+import VersionInfo from "./components/VersionInfo";
 import { teams } from "./constants/teamConfig";
 import TeamButton from "./components/TeamButton";
 import BackToHomeButton from "./components/BackHomeButton";

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Settings } from "lucide-react";
-import VersionInfo from "./VersionInfo";
+import VersionInfo from "./components/VersionInfo";
 import { teams } from "./constants/teamConfig";
 import Logo from "./assets/uadj_01_fixed.png";
 
