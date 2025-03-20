@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ref, set, push, onValue } from "firebase/database";
-import { database } from "./firebaseConfig";
-import VersionInfo from "./components/VersionInfo";
-import { teams } from "./constants/teamConfig";
-import TeamButton from "./components/TeamButton";
-import BackToHomeButton from "./components/BackHomeButton";
-import ButtonModeSelector from "./components/ButtonModeSelector";
-import ClickHistory from "./components/ClickHistory";
-import ClearClickHistoryButton from "./components/ClearClickHistoryButton";
-import Logo from "./assets/uadj_01_fixed.png";
+import { database } from "../firebaseConfig";
+import VersionInfo from "../components/VersionInfo";
+import { teams } from "../constants/teamConfig";
+import TeamButton from "../components/TeamButton";
+import BackToHomeButton from "../components/BackHomeButton";
+import ButtonModeSelector from "../components/ButtonModeSelector";
+import ClickHistory from "../components/ClickHistory";
+import ClearClickHistoryButton from "../components/ClearClickHistoryButton";
+import Logo from "../assets/uadj_01_fixed.png";
 
 type ButtonMode = "inactive" | "single-press" | "multi-press";
 

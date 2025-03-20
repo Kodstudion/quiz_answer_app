@@ -1,9 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./Home";
-import TeamPage from "./TeamPage";
-import AdminPage from "./AdminPage";
-import DashboardPage from "./DashboardPage";
+import Home from "./pages/HomePage";
+import TeamPage from "./pages/TeamPage";
+import AdminPage from "./pages/AdminPage";
+import DashboardPage from "./pages/DashboardPage";
 
 const App: React.FC = () => {
   return (

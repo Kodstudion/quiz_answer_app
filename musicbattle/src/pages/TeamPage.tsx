@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { ref, onValue, push } from "firebase/database";
-import { database } from "./firebaseConfig";
-import VersionInfo from "./components/VersionInfo";
-import { teams } from "./constants/teamConfig";
+import { database } from "../firebaseConfig";
+import VersionInfo from "../components/VersionInfo";
+import { teams } from "../constants/teamConfig";
 import { throttle } from "lodash";
-import TeamButton from "./components/TeamButton";
-import BackToHomeButton from "./components/BackHomeButton";
-import ClickHistory from "./components/ClickHistory";
-import Logo from "./assets/uadj_01_fixed.png";
+import TeamButton from "../components/TeamButton";
+import BackToHomeButton from "../components/BackHomeButton";
+import ClickHistory from "../components/ClickHistory";
+import Logo from "../assets/uadj_01_fixed.png";
 type ButtonMode = "inactive" | "single-press" | "multi-press";
 
 interface ClickEntry {
