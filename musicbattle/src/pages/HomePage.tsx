@@ -11,7 +11,7 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
+    <div className="flex flex-col items-center justify-center min-h-screen w-screen text-black p-6 relative">
       {/* Admin-knapp (kugghjul i övre vänstra hörnet) */}
       <button
         onClick={() => navigate("/admin")}
@@ -47,7 +47,7 @@ const Home: React.FC = () => {
           <button
             key={name}
             onClick={() => navigate(`/team/${name.toLowerCase()}`)}
-            className={`${navigateButtonColor} px-6 py-3 rounded-2xl text-lg font-semibold w-full shadow-md transform transition duration-300 hover:scale-105`}
+            className={`${navigateButtonColor} button px-6 py-3 rounded-2xl text-lg font-semibold w-full shadow-md transform transition duration-300 hover:scale-105`}
             aria-label={`Gå till laget ${displayName}`}
           >
             {displayName}

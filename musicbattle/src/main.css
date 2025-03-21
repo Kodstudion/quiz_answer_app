@@ -4,3 +4,32 @@
 .musikkampen-title {
   font-family: "Gochi Hand"; /* Använd Gochi Hand för Musikkampen */
 }
+
+/* Animerad bakgrund */
+@keyframes colorChange {
+  0% {
+    background-color: #ff4081;
+  } /* Neon pink */
+  16.67% {
+    background-color: #00bcd4;
+  } /* Cyan */
+  33.33% {
+    background-color: #ff9800;
+  } /* Orange */
+  50% {
+    background-color: #2196f3;
+  } /* Blue */
+  66.67% {
+    background-color: #ffeb3b;
+  } /* Yellow */
+  83.33% {
+    background-color: #9c27b0;
+  } /* Purple */
+  100% {
+    background-color: #ff4081;
+  } /* Återgå till Neon pink */
+}
+
+body {
+  animation: colorChange 10s infinite; /* Animerar bakgrunden var 10:e sekund */
+}
