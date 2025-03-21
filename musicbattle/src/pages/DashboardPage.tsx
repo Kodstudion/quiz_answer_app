@@ -93,7 +93,7 @@ const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
+    <div className="flex flex-col items-center justify-center min-h-screen w-screen text-black p-6 relative colorful-background-slow">
       <BackToHomeButton />
 
       {/* Loggan högst upp */}

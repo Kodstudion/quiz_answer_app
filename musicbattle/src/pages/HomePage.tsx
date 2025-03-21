@@ -11,7 +11,7 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-screen text-black p-6 relative">
+    <div className="flex flex-col items-center justify-center min-h-screen w-screen text-black p-6 relative colorful-background">
       {/* Admin-knapp (kugghjul i övre vänstra hörnet) */}
       <button
         onClick={() => navigate("/admin")}

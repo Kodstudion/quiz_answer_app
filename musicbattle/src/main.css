@@ -30,6 +30,12 @@
   } /* Återgå till Neon pink */
 }
 
-body {
+/* Färgglad bakgrund för specifik div */
+.colorful-background {
   animation: colorChange 10s infinite; /* Animerar bakgrunden var 10:e sekund */
+}
+
+/* Färgglad bakgrund för specifik div */
+.colorful-background-slow {
+  animation: colorChange 60s infinite; /* Animerar bakgrunden var 10:e sekund */
 }
