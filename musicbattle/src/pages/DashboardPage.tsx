@@ -7,9 +7,19 @@ import VersionInfo from "../components/VersionInfo";
 import FastestTeamDisplay from "../components/FastestTeamDisplay";
 import Logo from "../assets/uadj_01_fixed.png";
 
+// Importera ljudfiler
+import redSound from "../assets/sounds/red.mp3";
+import blueSound from "../assets/sounds/blue.mp3";
+import orangeSound from "../assets/sounds/orange.mp3";
+import lightBlueSound from "../assets/sounds/lightblue.mp3";
+import yellowSound from "../assets/sounds/yellow.mp3";
+import purpleSound from "../assets/sounds/purple.mp3";
+import greenSound from "../assets/sounds/green.mp3";
+import pinkSound from "../assets/sounds/pink.mp3";
+import plingSound from "../assets/sounds/pling.mp3"; // Importera pling-ljudet
+
 interface ClickEntry {
   team: string;
-  timestamp: string;
 }
 
 const DashboardPage: React.FC = () => {
@@ -28,14 +38,59 @@ const DashboardPage: React.FC = () => {
 
       // Visa snabbaste laget om det finns klick
       if (clicksArray.length > 0) {
-        setFastestTeam(clicksArray[0].team); // Anta att det första laget är det snabbaste
+        const currentFastestTeam = clicksArray[0].team; // Anta att det första laget är det snabbaste
+        setFastestTeam(currentFastestTeam);
+        playSound(currentFastestTeam); // Spela upp ljudet för det snabbaste laget
       } else {
         setFastestTeam("");
+        playResetSound(); // Spela pling-ljudet när listan är tom
       }
     });
 
     return () => unsubscribe(); // Avregistrera lyssnare
   }, []);
+
+  // Funktion för att spela upp ljud baserat på laget
+  const playSound = (team: string) => {
+    let sound: HTMLAudioElement;
+
+    switch (team) {
+      case "Röd":
+        sound = new Audio(redSound);
+        break;
+      case "Ljusblå":
+        sound = new Audio(lightBlueSound);
+        break;
+      case "Orange":
+        sound = new Audio(orangeSound);
+        break;
+      case "Blå":
+        sound = new Audio(blueSound);
+        break;
+      case "Gul":
+        sound = new Audio(yellowSound);
+        break;
+      case "Lila":
+        sound = new Audio(purpleSound);
+        break;
+      case "Grön":
+        sound = new Audio(greenSound);
+        break;
+      case "Rosa":
+        sound = new Audio(pinkSound);
+        break;
+      default:
+        return;
+    }
+
+    sound.play(); // Spela upp ljudet
+  };
+
+  // Funktion för att spela pling-ljudet när listan är tom
+  const playResetSound = () => {
+    const pling = new Audio(plingSound);
+    pling.play();
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
