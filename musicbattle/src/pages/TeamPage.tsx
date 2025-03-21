@@ -81,7 +81,9 @@ const TeamPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-screen bg-gradient-to-b from-gray-100 to-gray-300 text-black p-6 relative">
+    <div
+      className={`flex flex-col min-h-screen w-screen bg-gradient-to-b ${currentTeam.lightColor} text-black p-6 relative`}
+    >
       {/* Header-sektion */}
       <div className="flex justify-between items-center mb-4">
         <BackToHomeButton />
