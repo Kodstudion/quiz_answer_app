@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ref, onValue } from "firebase/database";
 import { database } from "../firebaseConfig";
 import BackToHomeButton from "../components/BackHomeButton";
@@ -23,6 +23,7 @@ interface ClickEntry {
 }
 
 const DashboardPage: React.FC = () => {
+  const isFirstLoad = useRef(true);
   const [clicks, setClicks] = useState<ClickEntry[]>([]);
   const [fastestTeam, setFastestTeam] = useState<string>("");
 
@@ -40,10 +41,18 @@ const DashboardPage: React.FC = () => {
       if (clicksArray.length > 0) {
         const currentFastestTeam = clicksArray[0].team; // Anta att det första laget är det snabbaste
         setFastestTeam(currentFastestTeam);
-        playSound(currentFastestTeam); // Spela upp ljudet för det snabbaste laget
+        if (clicksArray.length == 1 && !isFirstLoad.current) {
+          playSound(currentFastestTeam); // Spela lag-ljudet första gången någon klickar
+        }
       } else {
         setFastestTeam("");
-        playResetSound(); // Spela pling-ljudet när listan är tom
+        if (!isFirstLoad.current) {
+          playResetSound(); // Spela pling-ljudet när listan är tom
+        }
+      }
+
+      if (isFirstLoad.current) {
+        isFirstLoad.current = false;
       }
     });
 
