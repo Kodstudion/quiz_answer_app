@@ -115,9 +115,9 @@ const TeamPage: React.FC = () => {
 
           <ClickHistory clicks={clicks} />
         </div>
-        <footer>
+        <div className="absolute bottom-0 left-0 p-4 z-0">
           <VersionInfo />
-        </footer>
+        </div>
       </div>
     </div>
   );

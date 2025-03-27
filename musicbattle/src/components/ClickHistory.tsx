@@ -10,7 +10,7 @@ interface ClickHistoryProps {
 
 const ClickHistory: React.FC<ClickHistoryProps> = ({ clicks }) => {
   return (
-    <div className="mt-10 w-full max-w-xs mx-auto">
+    <div className="mt-10 w-full max-w-xs mx-auto z-1">
       <h2 className="text-xl font-semibold mb-2 text-center">📋 Resultat</h2>
       <table className="w-full bg-white rounded-lg shadow-md">
         <thead className="bg-gray-300">

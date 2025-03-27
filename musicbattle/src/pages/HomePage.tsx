@@ -69,10 +69,10 @@ const Home: React.FC = () => {
           </a>
         </div>
       </div>
-      <footer>
+      <div className="absolute bottom-0 left-0 p-4 z-0">
         {/* Versioninformation */}
         <VersionInfo />
-      </footer>
+      </div>
     </div>
   );
 };

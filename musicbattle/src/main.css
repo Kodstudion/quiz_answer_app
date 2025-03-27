@@ -45,13 +45,3 @@
 .colorful-background-slow {
   animation: colorChange 60s infinite; /* Animerar bakgrunden var 10:e sekund */
 }
-
-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  margin-top: 2rem; /* Justera avståndet ovanför fottern */
-  display: flex; /* Använd flexbox */
-  justify-content: flex-start; /* Placera innehållet till vänster */
-  align-items: center; /* Centrera vertikalt om det behövs */
-}
