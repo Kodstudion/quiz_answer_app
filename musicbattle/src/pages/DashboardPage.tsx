@@ -129,9 +129,7 @@ const DashboardPage: React.FC = () => {
           <img src={Logo} alt="Uppsala discjockey Logo" className="w-40" />
         </a>
       </div>
-      <div className="absolute bottom-0 left-0 p-4 z-0">
-        <VersionInfo />
-      </div>
+      <VersionInfo />
     </div>
   );
 };

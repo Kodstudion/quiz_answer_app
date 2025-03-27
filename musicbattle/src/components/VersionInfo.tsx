@@ -1,22 +1,12 @@
 import React from "react";
 
+const version = import.meta.env.VITE_APP_VERSION;
+
 const VersionInfo: React.FC = () => {
   return (
-    <div className="text-sm text-gray-600">
-      <p>
-        Utvecklad av{" "}
-        <a
-          href="https://kodstudion.se"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-600"
-        >
-          Kodstudion
-        </a>
-        {" - "}
-        ver. {import.meta.env.VITE_APP_VERSION}
-      </p>
-    </div>
+    <p className="text-sm text-gray-600 text-center w-full py-2">
+      ver. {version}
+    </p>
   );
 };
 

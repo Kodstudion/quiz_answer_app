@@ -81,43 +81,39 @@ const TeamPage: React.FC = () => {
   };
 
   return (
-    <div className={`bg-gradient-to-b ${currentTeam.lightColor}`}>
-      <div
-        className={`flex flex-col min-h-screen w-screen text-black p-6 relative`}
-      >
-        {/* Header-sektion */}
-        <div className="flex justify-between items-center mb-4">
-          <BackToHomeButton />
-          <a
-            href="https://uppsaladiscjockey.se"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-20 ml-auto"
-          >
-            <img src={Logo} alt="Musikkampen Logo" />{" "}
-          </a>
-        </div>
+    <div
+      className={`flex flex-col min-h-screen w-screen text-black p-6 relative bg-gradient-to-b ${currentTeam.lightColor}`}
+    >
+      {/* Header-sektion */}
+      <div className="flex justify-between items-center mb-4">
+        <BackToHomeButton />
+        <a
+          href="https://uppsaladiscjockey.se"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-20 ml-auto"
+        >
+          <img src={Logo} alt="Musikkampen Logo" />{" "}
+        </a>
+      </div>
 
-        {/* Centrera innehållet */}
-        <div className="flex flex-col items-center justify-center flex-grow">
-          <h1 className="text-3xl font-bold mb-6">
-            Lag: {currentTeam.displayName}
-          </h1>
+      {/* Centrera innehållet */}
+      <div className="flex flex-col items-center justify-center flex-grow">
+        <h1 className="text-3xl font-bold mb-6">
+          Lag: {currentTeam.displayName}
+        </h1>
 
-          <TeamButton
-            isPressed={isPressed}
-            buttonMode={buttonMode}
-            teamButtonColor={currentTeam.teamButtonColor}
-            teamButtonPressedColor={currentTeam.teamButtonPressedColor}
-            onClick={handleButtonPress}
-            teamName={currentTeam.displayName}
-          />
+        <TeamButton
+          isPressed={isPressed}
+          buttonMode={buttonMode}
+          teamButtonColor={currentTeam.teamButtonColor}
+          teamButtonPressedColor={currentTeam.teamButtonPressedColor}
+          onClick={handleButtonPress}
+          teamName={currentTeam.displayName}
+        />
 
-          <ClickHistory clicks={clicks} />
-        </div>
-        <div className="absolute bottom-0 left-0 p-4 z-0">
-          <VersionInfo />
-        </div>
+        <ClickHistory clicks={clicks} />
+        <VersionInfo />
       </div>
     </div>
   );

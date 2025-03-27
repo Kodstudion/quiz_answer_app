@@ -149,9 +149,7 @@ const AdminPage: React.FC = () => {
 
         {/* Visa historik över klick */}
         <ClickHistory clicks={clicks} />
-        <div className="absolute bottom-0 left-0 p-4 z-0">
-          <VersionInfo />
-        </div>
+        <VersionInfo />
       </div>
     </div>
   );
