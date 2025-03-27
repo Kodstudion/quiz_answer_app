@@ -100,7 +100,14 @@ const AdminPage: React.FC = () => {
       {/* Header-sektion */}
       <div className="flex justify-between items-center mb-4">
         <BackToHomeButton />
-        <img src={Logo} alt="Musikkampen Logo" className="w-20 ml-auto" />
+        <a
+          href="https://uppsaladiscjockey.se"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-20 ml-auto"
+        >
+          <img src={Logo} alt="Musikkampen Logo" />
+        </a>
       </div>
 
       {/* Lagknappar för admin att testa med */}
@@ -142,8 +149,9 @@ const AdminPage: React.FC = () => {
 
         {/* Visa historik över klick */}
         <ClickHistory clicks={clicks} />
-
-        <VersionInfo />
+        <footer>
+          <VersionInfo />
+        </footer>
       </div>
     </div>
   );

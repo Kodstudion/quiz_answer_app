@@ -105,18 +105,33 @@ const DashboardPage: React.FC = () => {
     <div className="flex flex-col items-center justify-center min-h-screen w-screen text-black p-6 relative colorful-background-slow">
       <BackToHomeButton />
 
-      {/* Loggan högst upp */}
-      <img src={Logo} alt="Musikkampen Logo" className="w-40 mb-6" />
+      {/* Loggan högst upp
+      <img src={Logo} alt="Uppsala discjockey Logo" className="w-40 mb-6" /> */}
 
       <h1 className="text-4xl font-extrabold mb-4 text-center tracking-wide">
-        Resultat
+        <span className="musikkampen-title">Musikkampen</span>
       </h1>
 
       <FastestTeamDisplay fastestTeam={fastestTeam} />
 
       <ClickHistory clicks={clicks} />
-
-      <VersionInfo />
+      <p className="mt-10 text-center">
+        <span className="musikkampen-normal">Musikkampen</span>
+        <br />
+        en del av
+      </p>
+      <div className="flex justify-center mt-2">
+        <a
+          href="https://uppsaladiscjockey.se"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img src={Logo} alt="Uppsala discjockey Logo" className="w-40" />
+        </a>
+      </div>
+      <footer>
+        <VersionInfo />
+      </footer>
     </div>
   );
 };
