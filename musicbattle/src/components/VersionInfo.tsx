@@ -12,8 +12,9 @@ const VersionInfo: React.FC = () => {
           className="text-gray-600"
         >
           Kodstudion
-        </a>{" "}
-        version: {import.meta.env.VITE_APP_VERSION}
+        </a>
+        {" - "}
+        ver. {import.meta.env.VITE_APP_VERSION}
       </p>
     </div>
   );
