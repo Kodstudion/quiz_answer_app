@@ -26,6 +26,7 @@ const DashboardPage: React.FC = () => {
   const isFirstLoad = useRef(true);
   const [clicks, setClicks] = useState<ClickEntry[]>([]);
   const [fastestTeam, setFastestTeam] = useState<string>("");
+  const [isMuted, setIsMuted] = useState<boolean>(true); // Ljudet är mutat som standard
 
   useEffect(() => {
     // Lyssna på klickhistoriken i databasen
@@ -41,12 +42,16 @@ const DashboardPage: React.FC = () => {
       if (clicksArray.length > 0) {
         const currentFastestTeam = clicksArray[0].team; // Anta att det första laget är det snabbaste
         setFastestTeam(currentFastestTeam);
-        if (clicksArray.length == 1 && !isFirstLoad.current) {
+
+        // Spela ljudet första gången någon klickar om det inte är första laddningen
+        if (clicksArray.length === 1 && !isFirstLoad.current && !isMuted) {
           playSound(currentFastestTeam); // Spela lag-ljudet första gången någon klickar
+        } else if (!isMuted) {
+          playSound(currentFastestTeam); // Spela lag-ljudet för det snabbaste laget
         }
       } else {
         setFastestTeam("");
-        if (!isFirstLoad.current) {
+        if (!isMuted) {
           playResetSound(); // Spela pling-ljudet när listan är tom
         }
       }
@@ -57,7 +62,7 @@ const DashboardPage: React.FC = () => {
     });
 
     return () => unsubscribe(); // Avregistrera lyssnare
-  }, []);
+  }, [isMuted]); // Lägg till isMuted som beroende
 
   // Funktion för att spela upp ljud baserat på laget
   const playSound = (team: string) => {
@@ -101,9 +106,24 @@ const DashboardPage: React.FC = () => {
     pling.play();
   };
 
+  // Funktion för att toggla mute-status
+  const toggleMute = () => {
+    setIsMuted((prev) => !prev);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-screen text-black p-6 relative colorful-background-slow">
       <BackToHomeButton />
+
+      <div className="absolute top-4 right-4">
+        <button
+          onClick={toggleMute}
+          className="p-2 bg-gray-300 hover:bg-gray-400 rounded-full shadow-md transition duration-300"
+          aria-label={isMuted ? "Slå på ljud" : "Stäng av ljud"}
+        >
+          {isMuted ? "🔇" : "🔊"} {/* Ikon för mute/unmute */}
+        </button>
+      </div>
 
       {/* Loggan högst upp
       <img src={Logo} alt="Uppsala discjockey Logo" className="w-40 mb-6" /> */}
