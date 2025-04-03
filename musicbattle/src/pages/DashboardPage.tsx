@@ -16,7 +16,7 @@ import yellowSound from "../assets/sounds/yellow.mp3";
 import purpleSound from "../assets/sounds/purple.mp3";
 import greenSound from "../assets/sounds/green.mp3";
 import pinkSound from "../assets/sounds/pink.mp3";
-import plingSound from "../assets/sounds/pling.mp3"; // Importera pling-ljudet
+import resetSound from "../assets/sounds/bush.mp3";
 
 interface ClickEntry {
   team: string;
@@ -102,7 +102,7 @@ const DashboardPage: React.FC = () => {
 
   // Funktion för att spela pling-ljudet när listan är tom
   const playResetSound = () => {
-    const pling = new Audio(plingSound);
+    const pling = new Audio(resetSound);
     pling.play();
   };
 
