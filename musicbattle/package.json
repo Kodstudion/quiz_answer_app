@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://kodstudion.github.io/quiz_answer_app/",
+  "homepage": "https://musikkampen.se/",
   "scripts": {
     "dev": "vite",
     "build": "powershell -Command \"$hash = (git rev-parse --short HEAD); (Get-Content .env) -replace 'VITE_APP_VERSION=.*', \\\"VITE_APP_VERSION=$hash\\\" | Set-Content .env; (Get-Content .env.production) -replace 'VITE_APP_VERSION=.*', \\\"VITE_APP_VERSION=$hash\\\" | Set-Content .env.production; npm run vite-build\"",
