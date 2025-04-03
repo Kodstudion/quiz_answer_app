@@ -46,8 +46,6 @@ const DashboardPage: React.FC = () => {
         // Spela ljudet första gången någon klickar om det inte är första laddningen
         if (clicksArray.length === 1 && !isFirstLoad.current && !isMuted) {
           playSound(currentFastestTeam); // Spela lag-ljudet första gången någon klickar
-        } else if (!isMuted) {
-          playSound(currentFastestTeam); // Spela lag-ljudet för det snabbaste laget
         }
       } else {
         setFastestTeam("");
