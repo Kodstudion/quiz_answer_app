@@ -3,7 +3,6 @@ import { ref, onValue } from "firebase/database";
 import { database } from "../firebaseConfig";
 import BackToHomeButton from "../components/BackHomeButton";
 import ClickHistory from "../components/ClickHistory";
-import VersionInfo from "../components/VersionInfo";
 import FastestTeamDisplay from "../components/FastestTeamDisplay";
 import Logo from "../assets/uadj_01_fixed.png";
 
