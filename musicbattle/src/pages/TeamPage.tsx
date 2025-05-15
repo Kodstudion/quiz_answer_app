@@ -2,12 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { ref, onValue, push } from "firebase/database";
 import { database } from "../firebaseConfig";
-import VersionInfo from "../components/VersionInfo";
 import { teams } from "../constants/teamConfig";
 import { throttle } from "lodash";
 import TeamButton from "../components/TeamButton";
 import BackToHomeButton from "../components/BackHomeButton";
-import ClickHistory from "../components/ClickHistory";
 import Logo from "../assets/uadj_01_fixed.png";
 type ButtonMode = "inactive" | "single-press" | "multi-press";
 
@@ -20,7 +18,6 @@ const TeamPage: React.FC = () => {
   const { teamName } = useParams<{ teamName: string }>();
   const [buttonMode, setButtonMode] = useState<ButtonMode>("inactive");
   const [isPressed, setIsPressed] = useState(false);
-  const [clicks, setClicks] = useState<ClickEntry[]>([]);
 
   const currentTeam =
     teams.find((team) => team.name.toLowerCase() === teamName?.toLowerCase()) ||
@@ -40,7 +37,6 @@ const TeamPage: React.FC = () => {
       throttle((snapshot) => {
         const data = snapshot.val();
         const clicksData = data ? (Object.values(data) as ClickEntry[]) : [];
-        setClicks(clicksData);
 
         if (buttonMode === "single-press") {
           const hasTeamClicked = clicksData.some(
