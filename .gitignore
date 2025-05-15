@@ -1,3 +1,4 @@
 *.pptx
 musicbattle/.env
 musicbattle/.env.production
+musicbattle/firebase_setup_instruction.pdf
