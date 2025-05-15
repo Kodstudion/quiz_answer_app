@@ -111,9 +111,6 @@ const TeamPage: React.FC = () => {
           onClick={handleButtonPress}
           teamName={currentTeam.displayName}
         />
-
-        <ClickHistory clicks={clicks} />
-        <VersionInfo />
       </div>
     </div>
   );
