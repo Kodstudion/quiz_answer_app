@@ -23,12 +23,12 @@ const FastestTeamDisplay: React.FC<FastestTeamDisplayProps> = ({
 
   return (
     <div
-      className={`mb-6 p-4 ${backgroundColor} rounded-lg shadow-md text-center`}
+      className={`mb-12 p-8 ${backgroundColor} rounded-lg shadow-md text-center`}
     >
-      <h2 className={`text-2xl font-semibold ${textColor}`}>
+      <h2 className={`text-4xl font-semibold ${textColor}`}>
         Snabbast på knappen:
       </h2>
-      <p className={`text-3xl font-bold mt-2 ${textColor}`}>{fastestTeam}</p>
+      <p className={`text-6xl font-bold mt-4 ${textColor}`}>{fastestTeam}</p>
     </div>
   );
 };
