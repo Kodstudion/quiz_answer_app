@@ -26,6 +26,7 @@ const DashboardPage: React.FC = () => {
   const [clicks, setClicks] = useState<ClickEntry[]>([]);
   const [fastestTeam, setFastestTeam] = useState<string>("");
   const [isMuted, setIsMuted] = useState<boolean>(true); // Ljudet är mutat som standard
+  const [showResults, setShowResults] = useState<boolean>(false); // Ny state-variabel för att visa/dölja resultatlistan
 
   useEffect(() => {
     // Lyssna på klickhistoriken i databasen
@@ -111,7 +112,6 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-screen text-black p-6 relative colorful-background-slow">
       <BackToHomeButton />
-
       <div className="absolute top-4 right-4">
         <button
           onClick={toggleMute}
@@ -120,18 +120,22 @@ const DashboardPage: React.FC = () => {
         >
           {isMuted ? "🔇" : "🔊"} {/* Ikon för mute/unmute */}
         </button>
+        <button
+          onClick={() => setShowResults((prev) => !prev)} // Toggle för att visa/dölja resultatlistan
+          className="p-2 bg-gray-300 hover:bg-gray-400 rounded-full shadow-md transition duration-300 ml-2"
+          aria-label={showResults ? "Dölj resultat" : "Visa resultat"}
+        >
+          {showResults ? "👁️‍🗨️" : "👁️"} {/* Ikon för att visa/dölja resultat */}
+        </button>
       </div>
-
       {/* Loggan högst upp
       <img src={Logo} alt="Uppsala discjockey Logo" className="w-40 mb-6" /> */}
-
       <h1 className="text-4xl font-extrabold mb-4 text-center tracking-wide">
         <span className="musikkampen-title">Musikkampen</span>
       </h1>
-
       <FastestTeamDisplay fastestTeam={fastestTeam} />
-
-      <ClickHistory clicks={clicks} />
+      {showResults && <ClickHistory clicks={clicks} />}{" "}
+      {/* Visa resultatlistan endast om showResults är true */}
       <p className="mt-10 text-center">
         <span className="musikkampen-normal">Musikkampen</span>
         <br />
