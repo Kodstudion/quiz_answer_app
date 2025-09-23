@@ -105,7 +105,7 @@ const TeamPage: React.FC = () => {
 
   return (
     <div
-      className={`flex flex-col min-h-screen w-screen text-black p-6 relative bg-gradient-to-b ${currentTeam.lightColor}`}
+      className={`flex flex-col min-h-[100dvh] w-screen text-black p-4 md:p-6 relative bg-gradient-to-b ${currentTeam.lightColor}`}
     >
       {/* Header-sektion */}
       <div className="flex justify-between items-center mb-4">
@@ -120,19 +120,23 @@ const TeamPage: React.FC = () => {
         </a>
       </div>
 
-      {/* Centrera innehållet */}
-      <div className="flex flex-col items-center justify-center flex-grow">
-        <h1 className="text-3xl font-bold mb-6">
+      {/* Huvudinnehåll */}
+      <div className="flex flex-col items-center flex-grow">
+        <h1 className="text-2xl md:text-3xl font-bold mb-3">
           Lag: {currentTeam.displayName}
         </h1>
+        {/* Spacer så att innehållet inte hamnar under den fixerade footern */}
+        <div className="flex-grow" />
+      </div>
 
-        {/* Interaktionssektion fixerad/sticky nära botten så den syns över tangentbordet */}
-        <div className="w-full max-w-md mt-auto sticky bottom-0 pb-[env(safe-area-inset-bottom)]">
-          <div className="flex flex-col items-center gap-4 bg-transparent pb-4">
+      {/* Fast footer: input + knapp alltid synliga över tangentbordet */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 pb-[env(safe-area-inset-bottom)] px-4 pt-2">
+        <div className="mx-auto w-full max-w-md">
+          <div className="flex flex-col items-center gap-3 bg-transparent pb-3">
             <input
               type="text"
               inputMode="text"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-400 text-lg"
+              className="w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-400 text-base md:text-lg bg-white/90"
               placeholder="Skriv ert svar här..."
               value={answerText}
               onChange={(e) => setAnswerText(e.target.value)}
@@ -149,8 +153,8 @@ const TeamPage: React.FC = () => {
               teamButtonPressedColor={currentTeam.teamButtonPressedColor}
               onClick={handleButtonPress}
               teamName={currentTeam.displayName}
-              width="w-44 md:w-56"
-              height="h-44 md:h-56"
+              width="w-28 h-28 md:w-44"
+              height="h-28 md:h-44"
             />
           </div>
         </div>
