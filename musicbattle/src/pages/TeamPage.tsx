@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import { ref, onValue, push } from "firebase/database";
+import { ref, onValue, push, set } from "firebase/database";
 import { database } from "../firebaseConfig";
 import { teams } from "../constants/teamConfig";
 import { throttle } from "lodash";
@@ -11,13 +11,16 @@ type ButtonMode = "inactive" | "single-press" | "multi-press";
 
 interface ClickEntry {
   team: string;
-  timestamp: string;
+  answer?: string;
+  timestamp?: string;
 }
 
 const TeamPage: React.FC = () => {
   const { teamName } = useParams<{ teamName: string }>();
   const [buttonMode, setButtonMode] = useState<ButtonMode>("inactive");
   const [isPressed, setIsPressed] = useState(false);
+  const [answerText, setAnswerText] = useState<string>("");
+  const [firstClick, setFirstClick] = useState<ClickEntry | null>(null);
 
   const currentTeam =
     teams.find((team) => team.name.toLowerCase() === teamName?.toLowerCase()) ||
@@ -38,11 +41,27 @@ const TeamPage: React.FC = () => {
         const data = snapshot.val();
         const clicksData = data ? (Object.values(data) as ClickEntry[]) : [];
 
+        // Bestäm första klicket (om något) – antas vara första objektet
+        const first =
+          clicksData.length > 0 ? (clicksData[0] as ClickEntry) : null;
+        setFirstClick(first);
+
         if (buttonMode === "single-press") {
           const hasTeamClicked = clicksData.some(
             (click) => click.team === currentTeam.displayName
           );
           setIsPressed(hasTeamClicked);
+
+          // Om någon (kanske annat lag) redan klickat först,
+          // synka textfältet till det svaret
+          if (first && first.answer !== undefined) {
+            setAnswerText(first.answer || "");
+          }
+        } else if (buttonMode === "inactive") {
+          // Håll inputen i synk med första svar även i inaktivt läge om det finns
+          if (first && first.answer !== undefined) {
+            setAnswerText(first.answer || "");
+          }
         }
       }, 300)
     );
@@ -63,6 +82,14 @@ const TeamPage: React.FC = () => {
     const clickRef = ref(database, `clicks`);
     push(clickRef, {
       team,
+      answer: answerText,
+    });
+
+    // Skriv/synka lagets aktuella svar under answers/{team}
+    const teamAnswerRef = ref(database, `answers/${team}`);
+    set(teamAnswerRef, {
+      team,
+      answer: answerText,
     });
 
     // Hantera single-press
@@ -89,7 +116,7 @@ const TeamPage: React.FC = () => {
           rel="noopener noreferrer"
           className="w-20 ml-auto"
         >
-          <img src={Logo} alt="Musikkampen Logo" />{" "}
+          <img src={Logo} alt="Musikkampen® Logo" />{" "}
         </a>
       </div>
 
@@ -99,14 +126,34 @@ const TeamPage: React.FC = () => {
           Lag: {currentTeam.displayName}
         </h1>
 
-        <TeamButton
-          isPressed={isPressed}
-          buttonMode={buttonMode}
-          teamButtonColor={currentTeam.teamButtonColor}
-          teamButtonPressedColor={currentTeam.teamButtonPressedColor}
-          onClick={handleButtonPress}
-          teamName={currentTeam.displayName}
-        />
+        {/* Interaktionssektion fixerad/sticky nära botten så den syns över tangentbordet */}
+        <div className="w-full max-w-md mt-auto sticky bottom-0 pb-[env(safe-area-inset-bottom)]">
+          <div className="flex flex-col items-center gap-4 bg-transparent pb-4">
+            <input
+              type="text"
+              inputMode="text"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-400 text-lg"
+              placeholder="Skriv ert svar här..."
+              value={answerText}
+              onChange={(e) => setAnswerText(e.target.value)}
+              disabled={
+                buttonMode === "inactive" ||
+                (buttonMode === "single-press" && !!firstClick)
+              }
+            />
+
+            <TeamButton
+              isPressed={isPressed}
+              buttonMode={buttonMode}
+              teamButtonColor={currentTeam.teamButtonColor}
+              teamButtonPressedColor={currentTeam.teamButtonPressedColor}
+              onClick={handleButtonPress}
+              teamName={currentTeam.displayName}
+              width="w-44 md:w-56"
+              height="h-44 md:h-56"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
