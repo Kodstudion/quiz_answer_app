@@ -7,6 +7,7 @@ import { throttle } from "lodash";
 import TeamButton from "../components/TeamButton";
 import BackToHomeButton from "../components/BackHomeButton";
 import Logo from "../assets/uadj_01_fixed.png";
+import { Lock } from "lucide-react";
 type ButtonMode = "inactive" | "single-press" | "multi-press";
 
 interface ClickEntry {
@@ -16,13 +17,15 @@ interface ClickEntry {
 }
 
 const TeamPage: React.FC = () => {
+  const MAX_CHARS = 100;
   const { teamName } = useParams<{ teamName: string }>();
   const [buttonMode, setButtonMode] = useState<ButtonMode>("inactive");
   const [isPressed, setIsPressed] = useState(false);
   const [answerText, setAnswerText] = useState<string>("");
-  const [firstClick, setFirstClick] = useState<ClickEntry | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const [inputHeightPx, setInputHeightPx] = useState<number>(56);
+  const isInputDisabled =
+    buttonMode === "inactive" || (buttonMode === "single-press" && isPressed);
 
   const currentTeam =
     teams.find((team) => team.name.toLowerCase() === teamName?.toLowerCase()) ||
@@ -43,26 +46,37 @@ const TeamPage: React.FC = () => {
         const data = snapshot.val();
         const clicksData = data ? (Object.values(data) as ClickEntry[]) : [];
 
-        // Bestäm första klicket (om något) – antas vara första objektet
-        const first =
-          clicksData.length > 0 ? (clicksData[0] as ClickEntry) : null;
-        setFirstClick(first);
+        // För referens: första klicket om man behöver det senare
+        // const first = clicksData.length > 0 ? (clicksData[0] as ClickEntry) : null;
+
+        // Om listan är tom (t.ex. rensad av admin) – rensa textfältet
+        if (clicksData.length === 0) {
+          setAnswerText("");
+          setIsPressed(false);
+        }
 
         if (buttonMode === "single-press") {
-          const hasTeamClicked = clicksData.some(
+          const teamClickIndex = clicksData.findIndex(
             (click) => click.team === currentTeam.displayName
           );
+          const hasTeamClicked = teamClickIndex !== -1;
           setIsPressed(hasTeamClicked);
 
-          // Om någon (kanske annat lag) redan klickat först,
-          // synka textfältet till det svaret
-          if (first && first.answer !== undefined) {
-            setAnswerText(first.answer || "");
+          // Uppdatera text om laget har klickat
+          if (hasTeamClicked) {
+            const teamClick = clicksData[teamClickIndex];
+            if (teamClick && teamClick.answer !== undefined) {
+              setAnswerText(teamClick.answer || "");
+            }
           }
+          // Viktigt: om ett annat lag klickar först ska vi INTE låsa detta lags input
         } else if (buttonMode === "inactive") {
-          // Håll inputen i synk med första svar även i inaktivt läge om det finns
-          if (first && first.answer !== undefined) {
-            setAnswerText(first.answer || "");
+          // Visa endast det egna lagets svar i inaktivt läge
+          const teamClick = clicksData.find(
+            (click) => click.team === currentTeam.displayName
+          );
+          if (teamClick && teamClick.answer !== undefined) {
+            setAnswerText(teamClick.answer || "");
           }
         }
       }, 300)
@@ -81,6 +95,9 @@ const TeamPage: React.FC = () => {
   useEffect(() => {
     const measure = () => {
       if (inputRef.current) {
+        // Auto-resize textarea och uppdatera spacer-höjd
+        inputRef.current.style.height = "auto";
+        inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
         setInputHeightPx(inputRef.current.offsetHeight || 56);
       }
     };
@@ -89,20 +106,45 @@ const TeamPage: React.FC = () => {
     return () => window.removeEventListener("resize", measure);
   }, []);
 
+  useEffect(() => {
+    // Auto-resize vid textförändring
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+      setInputHeightPx(inputRef.current.offsetHeight || 56);
+    }
+  }, [answerText]);
+
+  // Multi-press: håll textfältet i synk med SENASTE svaret för EGET lag
+  useEffect(() => {
+    const teamAnswerRef = ref(database, `answers/${currentTeam.displayName}`);
+    const unsubscribe = onValue(teamAnswerRef, (snapshot) => {
+      const data = snapshot.val() as { team?: string; answer?: string } | null;
+      if (
+        buttonMode === "multi-press" &&
+        data &&
+        typeof data.answer === "string"
+      ) {
+        setAnswerText(data.answer);
+      }
+    });
+    return () => unsubscribe();
+  }, [currentTeam.displayName, buttonMode]);
+
   const handleButtonPress = (team: string) => {
     if (buttonMode === "inactive") return;
 
     const clickRef = ref(database, `clicks`);
     push(clickRef, {
       team,
-      answer: answerText,
+      answer: answerText.slice(0, MAX_CHARS),
     });
 
     // Skriv/synka lagets aktuella svar under answers/{team}
     const teamAnswerRef = ref(database, `answers/${team}`);
     set(teamAnswerRef, {
       team,
-      answer: answerText,
+      answer: answerText.slice(0, MAX_CHARS),
     });
 
     // Hantera single-press
@@ -152,20 +194,37 @@ const TeamPage: React.FC = () => {
         />
 
         {/* Textfältet under knappen */}
-        <div className="w-full max-w-md mt-3 px-4 md:px-0">
-          <input
+        <div className="w-full max-w-md mt-3 px-4 md:px-0 relative">
+          <textarea
             ref={inputRef}
-            type="text"
-            inputMode="text"
-            className="w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-400 text-base md:text-lg bg-white/90"
+            rows={1}
+            className={`w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-400 text-base md:text-lg resize-none leading-relaxed ${
+              isInputDisabled
+                ? "bg-gray-200 text-gray-700 cursor-not-allowed pr-9"
+                : "bg-white/90"
+            }`}
             placeholder="Skriv ert svar här..."
             value={answerText}
-            onChange={(e) => setAnswerText(e.target.value)}
-            disabled={
-              buttonMode === "inactive" ||
-              (buttonMode === "single-press" && !!firstClick)
-            }
+            onChange={(e) => {
+              const value = e.target.value;
+              setAnswerText(
+                value.length > MAX_CHARS ? value.slice(0, MAX_CHARS) : value
+              );
+            }}
+            disabled={isInputDisabled}
+            aria-disabled={isInputDisabled}
           />
+          {isInputDisabled && (
+            <span
+              className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none"
+              aria-hidden
+            >
+              <Lock className="w-4 h-4 text-gray-600" />
+            </span>
+          )}
+          <div className="mt-1 text-right text-xs text-gray-700 select-none">
+            {answerText.length}/{MAX_CHARS}
+          </div>
         </div>
 
         {/* Spacer under textfältet för att undvika tangentbords-överlapp, lika hög som inputen */}
