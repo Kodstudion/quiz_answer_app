@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { ref, onValue, push, set } from "firebase/database";
 import { database } from "../firebaseConfig";
@@ -21,6 +21,8 @@ const TeamPage: React.FC = () => {
   const [isPressed, setIsPressed] = useState(false);
   const [answerText, setAnswerText] = useState<string>("");
   const [firstClick, setFirstClick] = useState<ClickEntry | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [inputHeightPx, setInputHeightPx] = useState<number>(56);
 
   const currentTeam =
     teams.find((team) => team.name.toLowerCase() === teamName?.toLowerCase()) ||
@@ -76,6 +78,17 @@ const TeamPage: React.FC = () => {
     };
   }, [currentTeam, listenToClicks]);
 
+  useEffect(() => {
+    const measure = () => {
+      if (inputRef.current) {
+        setInputHeightPx(inputRef.current.offsetHeight || 56);
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
   const handleButtonPress = (team: string) => {
     if (buttonMode === "inactive") return;
 
@@ -125,39 +138,41 @@ const TeamPage: React.FC = () => {
         <h1 className="text-2xl md:text-3xl font-bold mb-3">
           Lag: {currentTeam.displayName}
         </h1>
-        {/* Spacer så att innehållet inte hamnar under den fixerade footern */}
-        <div className="flex-grow" />
-      </div>
 
-      {/* Fast footer: input + knapp alltid synliga över tangentbordet */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 pb-[env(safe-area-inset-bottom)] px-4 pt-2">
-        <div className="mx-auto w-full max-w-md">
-          <div className="flex flex-col items-center gap-3 bg-transparent pb-3">
-            <input
-              type="text"
-              inputMode="text"
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-400 text-base md:text-lg bg-white/90"
-              placeholder="Skriv ert svar här..."
-              value={answerText}
-              onChange={(e) => setAnswerText(e.target.value)}
-              disabled={
-                buttonMode === "inactive" ||
-                (buttonMode === "single-press" && !!firstClick)
-              }
-            />
+        {/* Knapp direkt under lagnamnet */}
+        <TeamButton
+          isPressed={isPressed}
+          buttonMode={buttonMode}
+          teamButtonColor={currentTeam.teamButtonColor}
+          teamButtonPressedColor={currentTeam.teamButtonPressedColor}
+          onClick={handleButtonPress}
+          teamName={currentTeam.displayName}
+          width="w-28 h-28 md:w-44"
+          height="h-28 md:h-44"
+        />
 
-            <TeamButton
-              isPressed={isPressed}
-              buttonMode={buttonMode}
-              teamButtonColor={currentTeam.teamButtonColor}
-              teamButtonPressedColor={currentTeam.teamButtonPressedColor}
-              onClick={handleButtonPress}
-              teamName={currentTeam.displayName}
-              width="w-28 h-28 md:w-44"
-              height="h-28 md:h-44"
-            />
-          </div>
+        {/* Textfältet under knappen */}
+        <div className="w-full max-w-md mt-3 px-4 md:px-0">
+          <input
+            ref={inputRef}
+            type="text"
+            inputMode="text"
+            className="w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-400 text-base md:text-lg bg-white/90"
+            placeholder="Skriv ert svar här..."
+            value={answerText}
+            onChange={(e) => setAnswerText(e.target.value)}
+            disabled={
+              buttonMode === "inactive" ||
+              (buttonMode === "single-press" && !!firstClick)
+            }
+          />
         </div>
+
+        {/* Spacer under textfältet för att undvika tangentbords-överlapp, lika hög som inputen */}
+        <div
+          style={{ height: `${inputHeightPx}px` }}
+          className="w-full max-w-md"
+        />
       </div>
     </div>
   );
