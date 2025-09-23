@@ -14,7 +14,8 @@ type ButtonMode = "inactive" | "single-press" | "multi-press";
 
 interface ClickEntry {
   team: string;
-  timestamp: string;
+  answer?: string;
+  timestamp?: string;
 }
 
 const AdminPage: React.FC = () => {
@@ -84,7 +85,7 @@ const AdminPage: React.FC = () => {
           rel="noopener noreferrer"
           className="w-20 ml-auto"
         >
-          <img src={Logo} alt="Musikkampen Logo" />
+          <img src={Logo} alt="Musikkampen® Logo" />
         </a>
       </div>
 
@@ -117,6 +118,8 @@ const AdminPage: React.FC = () => {
 
         {/* Visa historik över klick */}
         <ClickHistory clicks={clicks} />
+
+        {/* Varumärke i rubriksektion (om vi behöver visa texten här) */}
         <VersionInfo />
       </div>
     </div>

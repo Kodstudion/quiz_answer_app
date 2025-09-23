@@ -33,7 +33,7 @@ const Home: React.FC = () => {
       <h1 className="text-4xl font-extrabold mb-4 text-center tracking-wide">
         Välkommen till
         <br />
-        <span className="musikkampen-title">Musikkampen</span>
+        <span className="musikkampen-title">Musikkampen®</span>
       </h1>
       <p className="text-lg text-center mb-6">
         Välj ditt lags ballongfärg för att börja spela!
@@ -53,7 +53,7 @@ const Home: React.FC = () => {
         ))}
       </div>
       <p className="mt-10 text-center">
-        <span className="musikkampen-normal">Musikkampen</span>
+        <span className="musikkampen-normal">Musikkampen®</span>
         <br />
         en del av
       </p>
