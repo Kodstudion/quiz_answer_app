@@ -3,12 +3,19 @@
 /* Specifik stil för Musikkampen */
 .musikkampen-title {
   font-family: "Gochi Hand"; /* Använd Gochi Hand för Musikkampen */
-  font-size: 4rem; /* Justera storleken efter behov */
+  font-size: 3rem; /* Större storlek för varumärket */
 }
+
 /* Specifik stil för Musikkampen */
 .musikkampen-normal {
   font-family: "Gochi Hand"; /* Använd Gochi Hand för Musikkampen */
-  font-size: 1.5rem; /* Justera storleken efter behov */
+  font-size: 1.5rem; /* Större storlek för varumärket */
+}
+
+/* Specifik stil för varumärkes symbolen */
+.trademark-symbol {
+  font-family: "Arial", sans-serif; /* Använd Arial för varumärkes symbolen */
+  font-size: 0.5em; /* Större storlek för varumärkes symbolen */
 }
 
 /* Animerad bakgrund */

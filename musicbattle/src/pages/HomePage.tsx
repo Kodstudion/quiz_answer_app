@@ -34,7 +34,7 @@ const Home: React.FC = () => {
         Välkommen till
         <br />
         <span className="musikkampen-title">
-          Musikkampen<sup className="text-sm align-super ml-0.5">®</sup>
+          Musikkampen<span className="trademark-symbol align-super ml-0.5">®</span>
         </span>
       </h1>
       <p className="text-base sm:text-lg text-center mb-4 sm:mb-6 px-2">
@@ -56,7 +56,7 @@ const Home: React.FC = () => {
       </div>
       <p className="mt-6 sm:mt-8 md:mt-10 text-center text-sm sm:text-base">
         <span className="musikkampen-normal">
-          Musikkampen<sup className="text-sm align-super ml-0.5">®</sup>
+          Musikkampen<span className="trademark-symbol align-super ml-0.5">®</span>
         </span>
         <br />
         en del av
