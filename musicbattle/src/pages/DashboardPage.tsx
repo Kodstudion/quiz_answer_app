@@ -132,7 +132,8 @@ const DashboardPage: React.FC = () => {
       <img src={Logo} alt="Uppsala discjockey Logo" className="w-40 mb-6" /> */}
       <h1 className="text-4xl font-extrabold mb-4 text-center tracking-wide">
         <span className="musikkampen-title">
-          Musikkampen<sup className="text-sm align-super ml-0.5">®</sup>
+          Musikkampen
+          <span className="trademark-symbol align-super ml-0.5">®</span>
         </span>
       </h1>
       <FastestTeamDisplay fastestTeam={fastestTeam} />
@@ -140,7 +141,8 @@ const DashboardPage: React.FC = () => {
       {/* Visa resultatlistan endast om showResults är true */}
       <p className="mt-10 text-center">
         <span className="musikkampen-normal">
-          Musikkampen<sup className="text-sm align-super ml-0.5">®</sup>
+          Musikkampen
+          <span className="trademark-symbol align-super ml-0.5">®</span>
         </span>
         <br />
         en del av
